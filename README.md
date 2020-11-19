@@ -1,8 +1,4 @@
 
-# Gazebo Simulation HW
+# Final Project
 
-This contains a simulation setup and sample control program for assignments in a
-university robotics course.
-
-This requires [Gazebo](http://gazebosim.org/) and is intended to work on a
-(non-virtualized) Ubuntu 20.04 or Debian 10 system.
+A final project implementation for CS 5335
