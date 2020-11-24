@@ -5,8 +5,8 @@
 using std::cout;
 using std::endl;
 
-const ALPHA = 0.2;
-const GAMMA = 0.9;
+const float ALPHA = 0.2;
+const float GAMMA = 0.9;
 
 struct State {
     float pos_t;
@@ -22,7 +22,7 @@ struct Action {
     float vr;
 };
 
-struct state {
+struct State {
     vector<vector<float>> q_table;
 } STATE;
 
@@ -52,7 +52,7 @@ float reward_table[20][4] = {
 
 void update_qtable(vector<vector<float>> q_table,
                    Action action,
-                   Reward reward,
+                   float reward,
                    State current_state,
                    State old_state) {
     float old_value = q_table[old_state][action];
@@ -74,13 +74,6 @@ vector<vector<float>> init_qtable(int num_states, int num_actions) {
     return q_table;
 }
 
-
-float reward(State state, Action action) {
-    return 0.0;
-}
-
-
-void q_learning() {};
 
 int main(int argc, char* argv[]) {
     cout << "starting algo" << endl;

@@ -39,6 +39,7 @@
       </visual>
     </link>
     
+    
     <link name="wheel_fl">
       <pose>
         0.1395 0.14200000000000002 0.05
@@ -63,7 +64,7 @@
           </cylinder>
         </geometry>
       </collision>
-      <visual name="visual">
+      <visual name="wheel_fl">
         <geometry>
           <cylinder>
             <radius>0.05</radius>
@@ -229,18 +230,17 @@
         <xyz>0 0 1</xyz>
       </axis>
     </joint>
-    
 
-    <include>
-      <uri>model://sonar</uri>
+     <include>
+      <uri>model://ultrasonic_sensor</uri>
       <pose>
-        0.0 0.0 0.22000000000000003
+        0.18 0.0 0.24
         0.0 0.0 0.0
       </pose>
     </include>
 
-    <joint name="lidar_joint" type="fixed">
-      <child>sonar::link</child>
+    <joint name="sonar_joint" type="fixed">
+      <child>ultrasonic_sensor::link</child>
       <parent>chassis</parent>
     </joint>
   </model>

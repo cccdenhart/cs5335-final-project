@@ -3,7 +3,7 @@
   # Based on Gazebo example
 
   # Vehicle with rigid suspension and front steering
-  # Consists of box chassis with 2 steerable and 2 non-steerable wheels
+  # Consists of box chassis with 4 non-steerable wheels
   # SI units (length in meters)
 
   # Geometry
@@ -193,15 +193,15 @@
     <% end %>
 
     <include>
-      <uri>model://sonar</uri>
+      <uri>model://ultrasonic_sensor</uri>
       <pose>
         0.0 0.0 <%= chassis_dz + wheel_radius %>
         0.0 0.0 0.0
       </pose>
     </include>
 
-    <joint name="lidar_joint" type="fixed">
-      <child>sonar::link</child>
+    <joint name="sonar_joint" type="fixed">
+      <child>ultrasonic_sensor::link</child>
       <parent>chassis</parent>
     </joint>
   </model>

@@ -1,4 +1,4 @@
 
 task :default do
-  system("bundle exec ruby mazegen.rb > ../worlds/demo1.world")
+  system("bundle exec ruby mazegen.rb > ../worlds/autogen.world")
 end

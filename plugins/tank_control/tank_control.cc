@@ -111,7 +111,7 @@ public:
                   << this->stat_sub->GetTopic() << std::endl;
 
         string pose_topic = "~/" + model_name + "/pose";
-        this->pose_pub = this->node->Advertise<msgs::PoseStamped>(pose_topic);
+        this->pose_pub = this->node->Advertise<msgs::PoseStamped>(pose_topic, 50);
         std::cerr << "Advertised pose" << std::endl;
 
         std::cerr << "tank control loaded" << std::endl;
@@ -123,8 +123,8 @@ public:
         int raw = msg->int_value();
         int xx = raw / 256 - 128;
         int yy = raw % 256 - 128;
-        double lvel = xx / 25.0;
-        double rvel = yy / 25.0;
+        double lvel = 3 * (xx / 25.0);
+        double rvel = 3 * (yy / 25.0);
 
         std::cerr << "Got vel cmd: " << lvel << "," << rvel << std::endl;
 
