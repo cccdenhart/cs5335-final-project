@@ -14,12 +14,13 @@ using std::endl;
 
 const float ALPHA = 0.2;
 const float GAMMA = 0.9;
-const float EPS = 0.9;
 const float BASE_VEL = 2.0;
-const float MIN_VEL = -2.0;
-const float MAX_VEL = 2.0;
+const float MIN_VEL = -3.0;
+const float MAX_VEL = 3.0;
 const int NUM_STATES = 10;
-const int NUM_ACTIONS = 10;
+const int NUM_ACTIONS = 8;
+float EPS = 0.3;
+float TICK = 0;
 
 // a raw representation of a robot state
 struct QState {
@@ -60,7 +61,7 @@ int discretize_action(QAction action) {
 // convert an integer action representation to a QAction
 // (usable for performing the action)
 QAction realize_action(int int_action) {
-	float diff = ((int_action * 1.0 / NUM_ACTIONS) * (MAX_VEL - MIN_VEL)) - MIN_VEL;
+	float diff = ((int_action * 1.0 / NUM_ACTIONS) * (MAX_VEL - MIN_VEL)) + MIN_VEL;
 	float vl = BASE_VEL - diff;
 	float vr = BASE_VEL + diff;
 	return { vl, vr };
@@ -130,17 +131,26 @@ vector<vector<float>> update_qtable(
 
 // determine a reward given the current state
 float get_reward(QState state) {
-	if (state.dist < 0.3)
-		return -1.0;
-	else if (state.dist < 2.0)
+	if (state.dist < 0.6)
+		return -5.0;
+	else if (state.dist < 1.0)
 		return 0.0;
-	else
+	else if (state.dist < 2.0)
+		return 5.0;
+	else if (state.dist < 2.5)
 		return 1.0;
+	else
+		return -5.0;
 }
 
 // steps to perform on each 'tick'
 void callback(Robot* robot) {
 	// float speed = 6 * clamp(0.0, robot->get_range() - 0.25, 1.0);
+	
+	// increment tick
+	TICK += 1;
+	if (TICK > 5000)
+		EPS = 0.9;
 	
 	// find the best action to take next
 	QState old_state = { robot->get_range() };
@@ -159,6 +169,7 @@ void callback(Robot* robot) {
 	// update q table
 	STATE.qtable = update_qtable(STATE.qtable, next_int_action, reward, cur_int_state, old_int_state);
 
+	cout << "tick: " << TICK << endl;
 	cout << "state: " << cur_int_state << ", " << cur_state.dist << endl;
 	cout << "action: " 
 			 << next_int_action 
