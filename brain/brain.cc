@@ -151,6 +151,11 @@ void callback(Robot* robot) {
 	TICK += 1;
 	if (TICK > 5000)
 		EPS = 0.9;
+
+	if (robot->get_range() < 0.1) {
+		robot->set_vel(-2.0, -2.0);
+		return;
+	}
 	
 	// find the best action to take next
 	QState old_state = { robot->get_range() };
