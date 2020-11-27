@@ -4,9 +4,7 @@
 MeEncoderOnBoard motorR(SLOT_1);
 MeEncoderOnBoard motorL(SLOT_2);
 
-MeLineFollower lineSensor(PORT_10);
-uint8_t currReading;
-uint8_t prevReading = -1;
+MeLineFollower lineSensorFront(PORT_10);
 
 MeUltrasonicSensor ultra(PORT_9);
 double distance;
@@ -78,7 +76,7 @@ void checkState() {
 
 
 void lineFollow() {
-  switch(lineSensor.readSensors()) {
+  switch(lineSensorFront.readSensors()) {
     case 0:
       //Serial.println("Both inside");
       driveFwd(200);
