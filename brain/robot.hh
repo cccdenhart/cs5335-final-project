@@ -5,11 +5,14 @@
 #include <gazebo/transport/transport.hh>
 #include <gazebo/msgs/msgs.hh>
 #include <gazebo/gazebo_client.hh>
+#include <vector>
+
+using std::vector;
 
 class Robot {
   public:
     virtual ~Robot() = 0;
-    virtual float get_range() = 0;
+    virtual vector<float> get_range() = 0;
     virtual void set_vel(double lvel, double rvel) = 0;
     virtual void do_stuff() = 0;
 };
@@ -31,7 +34,7 @@ class GzRobot : public Robot {
     void on_scan(ConstSonarStampedPtr &msg);
     void on_pose(ConstPoseStampedPtr &msg);
 
-    float get_range();
+    vector<float> get_range();
     void set_vel(double lvel, double rvel);
     void do_stuff();
 
@@ -52,12 +55,12 @@ class RgRobot : public Robot {
 
     void read_range();
 
-    float get_range();
+    vector<float> get_range();
     void set_vel(double lvel, double rvel);
     void do_stuff();
 
     void (*on_update)(Robot*);
-    float range;
+    vector<float> range;
 };
 
 static

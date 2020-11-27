@@ -44,7 +44,7 @@ RgRobot::~RgRobot()
 
 }
 
-float
+vector<float>
 RgRobot::get_range()
 {
     return range;
@@ -89,10 +89,9 @@ serial_read_line(int port)
     }
 }
 
-void
-RgRobot::read_range()
+float range_api(int port)
 {
-    string line = serial_read_line(port1);
+		string line = serial_read_line(port);
     const char* temp = line.c_str();
 
     cout << "[" << temp << "]" << endl;
@@ -100,13 +99,22 @@ RgRobot::read_range()
     int rg, sL, sR;
     int rv = sscanf(temp, "%d %d %d", &rg, &sL, &sR);
     if (rv != 3) {
-        this->range = 0;
-        return;
+        return 0;
     }
 
-    this->range = rg / 100.0f;
-    cout << "range = " << this->range << "; "
-         << "speeds = " << sL << "," << sR << endl;
+    float range = rg / 100.0f;
+
+		return range;
+}
+
+void
+RgRobot::read_range()
+{
+		float range0 = range_api(port1);
+		float range1 = range_api(port2);
+    this->range.clear();
+		this->range.push_back(range0);
+		this->range.push_back(range1);
 }
 
 void

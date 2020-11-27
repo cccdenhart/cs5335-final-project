@@ -9,6 +9,11 @@
 
 #include "robot.hh"
 
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+
 using std::string;
 using std::vector;
 using std::cout;
@@ -23,12 +28,14 @@ const float MIN_VEL = -3.0;
 const float MAX_VEL = 3.0;
 const int NUM_STATES = 20;
 const int NUM_ACTIONS = 20;
+bool TRAINING = false;
 float EPS = 0.3;
 int TICK = 0;
 
 // a raw representation of a robot state
 struct QState {
 	float dist;
+	float dist2;
 };
 
 // a raw representation of a robot action
@@ -50,7 +57,8 @@ WorldState STATE;
 int discretize_state(QState state) {
 	float max_dist = 3.0;
   float dist = clamp(0.0, state.dist, max_dist);
-	int norm = floor(dist / max_dist * NUM_STATES);
+	int norm = floor(dist / max_dist * NUM_STATES / 2);
+
 	return norm;
 }
 
@@ -179,7 +187,7 @@ float get_reward(QState state) {
 		return -1.0;
 	else if (state.dist < 1.0)
 		return 1.0;
-	else if (state.dist < 2.0)
+	else if (state.dist < 1.7)
 		return 5.0;
 	else if (state.dist < 2.5)
 		return 1.0;
@@ -187,6 +195,30 @@ float get_reward(QState state) {
 		return -5.0;
 }
 
+/*
+void keyboard_input(Robot* robot) {
+	switch((c=getch())) {
+		case KEY_UP:
+			cout << endl << "Up" << endl;//key up
+			robot->set_vel(2.0, 2.0);
+		case KEY_DOWN:
+			cout << endl << "Down" << endl;   // key down
+			robot->set_vel(-2.0, -2.0);
+		case KEY_LEFT:
+			cout << endl << "Left" << endl;  // key left
+			robot->set_vel(-2.0, 2.0);
+		case KEY_RIGHT:
+			cout << endl << "Right" << endl;  // key right
+			robot->set_vel(2.0, -2.0);
+		case "d":
+			cout << "done training" << endl;
+			TRAINING = FAlSE;
+		default:
+			cout << endl << "null" << endl;  // not arrow
+			break;
+	}	
+}
+*/
 
 // steps to perform on each 'tick'
 void callback(Robot* robot) {
@@ -194,45 +226,55 @@ void callback(Robot* robot) {
 	// increment tick
 	TICK += 1;
 
-	// decrease 'randomness' in q-learning after 5000 tick
-	if (TICK > 5000)
-		EPS = 0.9;
+	if (TRAINING)
+		// keyboard_input(robot);
+		return;
+	else {
 
-	// cache qtable
-	if (TICK % 1000 == 0)
-		write_csv(CSV_FILEPATH, STATE.qtable);
+		// decrease 'randomness' in q-learning after 5000 tick
+		if (TICK > 5000)
+			EPS = 0.9;
 
-		
-	// find the best action to take next
-	QState old_state = { robot->get_range() };
-	int old_int_state = discretize_state(old_state);
-	int next_int_action = choose_action(STATE.qtable, old_state);
-	QAction next_action = realize_action(next_int_action);
+		// cache qtable
+		if (TICK % 1000 == 0)
+			write_csv(CSV_FILEPATH, STATE.qtable);
 
-	// safety mechanism for robot getting stuck on wall
-	if (robot->get_range() < 0.1)
-		next_action = { -2.0, -2.0 };
+			
+		// find the best action to take next
+		QState old_state = { robot->get_range()[0] };
+		int old_int_state = discretize_state(old_state);
+		int next_int_action = choose_action(STATE.qtable, old_state);
+		QAction next_action = realize_action(next_int_action);
 
-	// perform that action	
-	robot->set_vel(next_action.vl, next_action.vr);
+		// safety mechanism for robot getting stuck on wall
+		if (robot->get_range()[0] < 0.1)
+			next_action = { -2.0, -3.0 };
 
-	// measure reward from previous action
-	QState cur_state = { robot->get_range() };
-	int cur_int_state = discretize_state(cur_state);
-	float reward = get_reward(cur_state);
+		// default behavior when no wall in sight
+		if (robot->get_range()[0] > 2.0)
+			next_action = { 0.5, 4.0 };
 
-	// update q table
-	STATE.qtable = update_qtable(STATE.qtable, next_int_action, reward, cur_int_state, old_int_state);
+		// perform that action	
+		robot->set_vel(next_action.vl, next_action.vr);
 
-	cout << "tick: " << TICK << endl;
-	cout << "state: " << cur_int_state << ", " << cur_state.dist << endl;
-	cout << "action: " 
-			 << next_int_action 
-			 << ", " 
-			 << "(" << next_action.vl << ", " << next_action.vr << ")" 
-			 << endl;
-	cout << "reward: " << reward << endl;
-	cout << "=====\n" << endl;
+		// measure reward from previous action
+		QState cur_state = { robot->get_range()[0] };
+		int cur_int_state = discretize_state(cur_state);
+		float reward = get_reward(cur_state);
+
+		// update q table
+		STATE.qtable = update_qtable(STATE.qtable, next_int_action, reward, cur_int_state, old_int_state);
+
+		cout << "tick: " << TICK << endl;
+		cout << "state: " << cur_int_state << ", " << cur_state.dist << endl;
+		cout << "action: " 
+				 << next_int_action 
+				 << ", " 
+				 << "(" << next_action.vl << ", " << next_action.vr << ")" 
+				 << endl;
+		cout << "reward: " << reward << endl;
+		cout << "=====\n" << endl;
+	}
 }
 
 // initialize the world

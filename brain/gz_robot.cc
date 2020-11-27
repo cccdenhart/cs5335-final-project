@@ -48,10 +48,12 @@ GzRobot::~GzRobot()
     cout << "robot destroyed" << endl;
 }
 
-float
+vector<float>
 GzRobot::get_range()
 {
-    return this->range;
+	  vector<float> range_res;
+		range_res.push_back(this->range);
+    return range_res;
 }
 
 void
