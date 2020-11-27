@@ -38,7 +38,8 @@
       
       <sensor name="sonar" type="sonar">
         <pose>0.04 0 0 0 1.5 3.14</pose>
-        <sonar>
+				<sonar>
+					<samples>1</samples>
           <min>0</min>
           <max>3</max>
           <radius>0.3</radius>

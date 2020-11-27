@@ -5,22 +5,26 @@
 #include <math.h>
 #include <string.h>
 #include <cstdlib>
+#include <fstream>
 
 #include "robot.hh"
 
+using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
 
+const bool READ_CSV = true;
+const string CSV_FILEPATH = "qtable.csv";
 const float ALPHA = 0.2;
 const float GAMMA = 0.9;
 const float BASE_VEL = 2.0;
 const float MIN_VEL = -3.0;
 const float MAX_VEL = 3.0;
-const int NUM_STATES = 10;
-const int NUM_ACTIONS = 8;
+const int NUM_STATES = 20;
+const int NUM_ACTIONS = 20;
 float EPS = 0.3;
-float TICK = 0;
+int TICK = 0;
 
 // a raw representation of a robot state
 struct QState {
@@ -53,7 +57,7 @@ int discretize_state(QState state) {
 // converts a raw action representation to an integer representation
 // (usable by the Q-Table)
 int discretize_action(QAction action) {
-	float diff = clamp(MIN_VEL, action.vl - action.vr, MAX_VEL);
+	float diff = clamp(BASE_VEL + MIN_VEL, action.vl - action.vr, BASE_VEL + MAX_VEL);
 	int norm = floor((diff - MIN_VEL) / (MAX_VEL - MIN_VEL) * NUM_ACTIONS);
 	return norm;
 }
@@ -67,14 +71,52 @@ QAction realize_action(int int_action) {
 	return { vl, vr };
 }
 
-// initializes the q-table
-vector<vector<float>> init_qtable(int num_states, int num_actions) {
+void write_csv(string filepath, vector<vector<float>> qtable) {
+	std::ofstream csv;
+	csv.open(filepath);
+
+	for (int i = 0; i < qtable.size(); i++) {
+		vector<float> row = qtable[i];
+		for (int j = 0; j < row.size(); j++) {
+			csv << row[j];
+			if (j < (row.size() - 1))
+				csv << ",";
+			else
+				csv << "\n";
+		}
+	}
+}
+
+vector<vector<float>> read_from_csv(string filepath) {
 	vector<vector<float>> qtable;
-	for (int i = 0; i != num_states; i++) {
-			vector<float> row;
-			for (int j = 0; j != num_actions; j++)
-					row.push_back(0.0);
-			qtable.push_back(row);
+	std::ifstream csv;
+	csv.open(filepath);
+
+	while (!csv.eof()) {
+		vector<float> row;
+		string line, val;
+		getline(csv, line);
+		std::stringstream ss(line);
+		while (getline(ss, val, ',')) {
+			row.push_back(std::stof(val));
+		}
+		qtable.push_back(row);
+	}
+	return qtable;
+}
+
+// initializes the q-table
+vector<vector<float>> init_qtable(int num_states, int num_actions, string filepath, bool read_csv) {
+	vector<vector<float>> qtable;
+	if (read_csv)
+		qtable = read_from_csv(filepath);
+	else {
+		for (int i = 0; i != num_states; i++) {
+				vector<float> row;
+				for (int j = 0; j != num_actions; j++)
+						row.push_back(0.0);
+				qtable.push_back(row);
+		}
 	}
 	return qtable;
 }
@@ -131,10 +173,12 @@ vector<vector<float>> update_qtable(
 
 // determine a reward given the current state
 float get_reward(QState state) {
-	if (state.dist < 0.6)
+	if (state.dist < 0.3)
 		return -5.0;
+	else if (state.dist < 0.6)
+		return -1.0;
 	else if (state.dist < 1.0)
-		return 0.0;
+		return 1.0;
 	else if (state.dist < 2.0)
 		return 5.0;
 	else if (state.dist < 2.5)
@@ -143,25 +187,31 @@ float get_reward(QState state) {
 		return -5.0;
 }
 
+
 // steps to perform on each 'tick'
 void callback(Robot* robot) {
-	// float speed = 6 * clamp(0.0, robot->get_range() - 0.25, 1.0);
 	
 	// increment tick
 	TICK += 1;
+
+	// decrease 'randomness' in q-learning after 5000 tick
 	if (TICK > 5000)
 		EPS = 0.9;
 
-	if (robot->get_range() < 0.1) {
-		robot->set_vel(-2.0, -2.0);
-		return;
-	}
-	
+	// cache qtable
+	if (TICK % 1000 == 0)
+		write_csv(CSV_FILEPATH, STATE.qtable);
+
+		
 	// find the best action to take next
 	QState old_state = { robot->get_range() };
 	int old_int_state = discretize_state(old_state);
 	int next_int_action = choose_action(STATE.qtable, old_state);
 	QAction next_action = realize_action(next_int_action);
+
+	// safety mechanism for robot getting stuck on wall
+	if (robot->get_range() < 0.1)
+		next_action = { -2.0, -2.0 };
 
 	// perform that action	
 	robot->set_vel(next_action.vl, next_action.vr);
@@ -202,7 +252,7 @@ int main(int argc, char* argv[]) {
 			robot = new RgRobot(argc, argv, callback);
 	}
 
-	STATE.qtable = init_qtable(NUM_STATES, NUM_ACTIONS);
+	STATE.qtable = init_qtable(NUM_STATES, NUM_ACTIONS, CSV_FILEPATH, READ_CSV);
 
 	robot->do_stuff();
 

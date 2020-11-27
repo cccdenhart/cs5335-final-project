@@ -13,17 +13,18 @@ using std::string;
 
 #include "robot.hh"
 
-int port;
+int port1;
+int port2;
 
 RgRobot::RgRobot(int argc, char* argv[], void (*cb)(Robot*))
     : on_update(cb)
 {
     int rv;
-    port = open("/dev/ttyUSB0", O_RDWR);
-    assert(port > 0);
+    port1 = open("/dev/ttyUSB0", O_RDWR);
+    assert(port1 > 0);
 
     struct termios cfg;
-    rv = tcgetattr(port, &cfg);
+    rv = tcgetattr(port1, &cfg);
     assert(rv != -1);
 
     // https://github.com/todbot/arduino-serial/blob/master/arduino-serial-lib.c
@@ -34,7 +35,7 @@ RgRobot::RgRobot(int argc, char* argv[], void (*cb)(Robot*))
     cfg.c_cflag &= ~CRTSCTS;
     cfg.c_cflag |= CS8;
 
-    rv = tcsetattr(port, TCSANOW, &cfg);
+    rv = tcsetattr(port1, TCSANOW, &cfg);
     assert(rv != -1);
 }
 
@@ -60,13 +61,13 @@ RgRobot::set_vel(double lvel, double rvel)
     int s1 = (int)round(rvel * 50);
 
     snprintf(temp, 96, "%d %d\n", s0, s1);
-    write(port, temp, strlen(temp));
+    write(port1, temp, strlen(temp));
     //cout << "cmd: " << temp << endl;
 }
 
 static
 string
-serial_read_line()
+serial_read_line(int port)
 {
     string temp("");
     char cc = 0;
@@ -91,7 +92,7 @@ serial_read_line()
 void
 RgRobot::read_range()
 {
-    string line = serial_read_line();
+    string line = serial_read_line(port1);
     const char* temp = line.c_str();
 
     cout << "[" << temp << "]" << endl;

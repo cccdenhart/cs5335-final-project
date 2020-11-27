@@ -234,13 +234,13 @@
      <include>
       <uri>model://ultrasonic_sensor</uri>
       <pose>
-        0.18 0.0 0.24
-        0.0 0.0 0.0
+        0.18 0.05 0.24
+        0.0 0.0 0.2
       </pose>
-    </include>
+		</include>
 
     <joint name="sonar_joint" type="fixed">
-      <child>ultrasonic_sensor::link</child>
+			<child>ultrasonic_sensor::link</child>
       <parent>chassis</parent>
     </joint>
   </model>
