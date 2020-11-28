@@ -36,6 +36,26 @@ bool TRAINING = false;
 float EPS = 0.3;
 int TICK = 0;
 
+// Led Ring
+MeRGBLed leds(0);
+#define LEDNUM 12
+#define LEDPORT 55
+#define OFF 0, 0, 0
+#define RED 255, 0, 0
+#define BLUE 0, 0, 255
+#define GREEN 0, 255, 0
+
+// Line follower
+MeLineFollower lineSensor(PORT_10);
+
+// Buzzer
+#define BUZZER_PORT 45
+
+const float MAX_HALL = 15.0;
+bool INSIDE = false;
+bool DONE = false;
+int keyCount = 0;
+
 MeEncoderOnBoard MOTOR_R(SLOT_1);
 MeEncoderOnBoard MOTOR_L(SLOT_2);
 
@@ -284,13 +304,35 @@ void keyboard_input(Robot* robot) {
 }
 */
 
-void check_key(
+void checkKey(float dist_f, float dist_r) {
+  if (dist_f < MAX_HALL && dist_r < MAX_HALL) {
+    INSIDE = true;
+  } else {
+    INSIDE = false;
+  }
+  
+  if (INSIDE == true && DONE == false) {
+    if (lineSensor.readSensors() == 0) {
+      DONE = true;
+      STATE.remaining_keys -= 1;
+      // leds.setColorAt(keyCount);
+      // siren.tone(784, 50);
+      // siren.tone(1046, 100);
+    } else {
+    DONE = false;
+    }
+  } 
+}
 
 // setup arduino board
 void setup() {
   Serial.begin(9600);
   Serial.println("initializing qtable .....");
   STATE.qtable = init_qtable(NUM_STATES, NUM_ACTIONS, CSV_FILEPATH, false);
+  leds.setpin(LEDPORT);
+  leds.setNumber(LEDNUM);
+  leds.setColor(OFF);
+  leds.show();
 }
 
 void loop() {
@@ -315,6 +357,9 @@ void loop() {
     // remove 'randomness' in q-learning actions after 15000 tick
     if (TICK > 500)
       EPS = 1.0;
+
+    // check for a key
+    checkKey(dist_f, dist_r);
 
     // cache qtable
     /*
