@@ -1,62 +1,53 @@
 /*
  * TODO:
- * - clean up file
  * - add key condition (short on both sonars, line follower on) + track keys
- * - convert distances to CM
  * - incorporate sound
  * - presentation + project text file
+ * - gazebo video
+ * - keyboard input training?
  */
 
-
-
-// #include <iostream>
-//#include <string>
-//#include <filesystem>
 #include <math.h>
 #include <string.h>
-//#include <cstdlib>
-//#include <fstream>
 #include "MeAuriga.h"
 
-double distance;
-
-//#include "robot.hh"
-
-#define KEY_UP 72
-#define KEY_DOWN 80
-#define KEY_LEFT 75
-#define KEY_RIGHT 77
-
-//using std::string;
-// using std::vector;
-//using std::cout;
-//using std::endl;
+/*
+#include "robot.hh"
+using std::string;
+using std::vector;
+using std::cout;
+using std::endl;
+*/
 
 const bool READ_CSV = false;
-//const char[] CSV_FILEPATH = "qtable.csv";
+const char* CSV_FILEPATH = "qtable.csv";
 const float ALPHA = 0.2;
 const float GAMMA = 0.9;
-const float BASE_VEL = 2.0;
-const float MIN_VEL = -3.0;
-const float MAX_VEL = 3.0;
-const int NUM_STATES = 36;
-const int NUM_ACTIONS = 20;
+const float GZ_BASE_VEL = 2.0;  // gazebo base velocity
+const float GZ_MIN_VEL = -3.0;  // gazebo most negative amount CHANGED from base vel
+const float GZ_MAX_VEL = 3.0;  // gazebo most postive amount CHANGED from base vel
+const float RG_BASE_VEL = 100.0;  // ranger base velocity
+const float RG_MIN_VEL = -150.0;  // ranger most negative amount CHANGED from base vel
+const float RG_MAX_VEL = 150.0;  // ranger most positive amount CHANGED from base vel
+const float RG_MAX_DIST = 75.0;  // ranger max distance considered for state
+const int NUM_STATES = 36;  // number of state (distance) intervals used in qtable
+const int NUM_ACTIONS = 20;  // number of action (vl - vr) intervals used in qtable 
 bool TRAINING = false;
 float EPS = 0.3;
 int TICK = 0;
 
-MeEncoderOnBoard motorR(SLOT_1);
-MeEncoderOnBoard motorL(SLOT_2);
+MeEncoderOnBoard MOTOR_R(SLOT_1);
+MeEncoderOnBoard MOTOR_L(SLOT_2);
 
 MeLineFollower lineSensorFront(PORT_10);
 
-MeUltrasonicSensor ultra(PORT_9);
-MeUltrasonicSensor ultra2(PORT_7);
+MeUltrasonicSensor ULTRA_F(PORT_9);
+MeUltrasonicSensor ULTRA_R(PORT_7);
 
 // a raw representation of a robot state
 struct QState {
-  float dist;
-  float dist2;
+  float dist_f;
+  float dist_r;
 };
 
 // a raw representation of a robot action
@@ -72,71 +63,88 @@ struct WorldState {
 
 WorldState STATE;
 
-float
-clamp(float xmin, float xx, float xmax)
-{
-    if (xx < xmin) return xmin;
-    if (xx > xmax) return xmax;
-    return xx;
+// limit the given value between the given min/max
+float clamp(float xmin, float xx, float xmax) {
+  if (xx < xmin) return xmin;
+  if (xx > xmax) return xmax;
+  return xx;
 }
 
 // converts a raw state representation to an integer representation
 // (usable by the Q-Table)
 int discretize_state(QState state) {
-  float max_dist = 3.0;
-  float dist = clamp(0.0, state.dist, max_dist);
   int root_states = floor(sqrt(NUM_STATES));
-  int norm = floor(dist / max_dist * root_states);
+  
+  float dist_f = clamp(0.0, state.dist_f, RG_MAX_DIST);
+  int norm_f = floor(dist_f / RG_MAX_DIST * root_states);
 
-  float dist2 = clamp(0.0, state.dist, max_dist);
-  int norm2 = floor(dist / max_dist * root_states);
+  float dist_r = clamp(0.0, state.dist_r, RG_MAX_DIST);
+  int norm_r = floor(dist_r / RG_MAX_DIST * root_states);
 
-  return norm * norm2;
+  return norm_f * norm_r;
 }
 
 // converts a raw action representation to an integer representation
 // (usable by the Q-Table)
 int discretize_action(QAction action) {
-  float diff = clamp(BASE_VEL + MIN_VEL, action.vl - action.vr, BASE_VEL + MAX_VEL);
-  int norm = floor((diff - MIN_VEL) / (MAX_VEL - MIN_VEL) * NUM_ACTIONS);
+  float diff = clamp(RG_BASE_VEL + RG_MIN_VEL, action.vl - action.vr, RG_BASE_VEL + RG_MAX_VEL);
+  int norm = floor((diff - RG_MIN_VEL) / (RG_MAX_VEL - RG_MIN_VEL) * NUM_ACTIONS);
   return norm;
 }
 
 // convert an integer action representation to a QAction
 // (usable for performing the action)
 QAction realize_action(int int_action) {
-  float diff = ((int_action * 1.0 / NUM_ACTIONS) * (MAX_VEL - MIN_VEL)) + MIN_VEL;
-  float vl = BASE_VEL - diff;
-  float vr = BASE_VEL + diff;
+  float diff = ((int_action * 1.0 / NUM_ACTIONS) * (RG_MAX_VEL - RG_MIN_VEL)) + RG_MIN_VEL;
+  float vl = RG_BASE_VEL - diff;
+  float vr = RG_BASE_VEL + diff;
   return { vl, vr };
 }
 
+// convert gazebo action values to ranger action values
+QAction normalize_speed(QAction action) {
+  float rg_min = -40;
+  float rg_max = 200;
+  float gz_min = -1.0;
+  float gz_max = 5.0;
+  float norm_vl = (action.vl - gz_min) / (gz_max - gz_min);
+  float new_vl = norm_vl * (rg_max - rg_min) + rg_min;
+  float norm_vr = (action.vr - gz_min) / (gz_max - gz_min);
+  float new_vr = -1 * (norm_vr * (rg_max - rg_min) + rg_min);
+  // return { map(action.vl, -1.0, 5.0, -200, 200), map(action.vr, -1.0, 5.0, -200, 200) };
+  return { new_vl, new_vr };
+}
+
+// convert gazebo distance values to ranger distance values
+float normalize_dist(float rg_dist) {
+  float norm_dist = (rg_dist) / 400.0 * 2.75;
+  return norm_dist;
+}
+
 /*
-void write_csv(char[] filepath, float[][] qtable) {
+void write_csv(char* filepath, float** qtable) {
   std::ofstream csv;
   csv.open(filepath);
 
   for (int i = 0; i < NUM_STATES; i++) {
-    float[NUM_ACTIONS] row = qtable[i];
+    float* row = qtable[i];
     for (int j = 0; j < NUM_ACTIONS; j++) {
       csv << row[j];
-      if (j < (row.size() - 1))
+      if (j < (NUM_ACTIONS - 1))
         csv << ",";
       else
         csv << "\n";
     }
   }
 }
-*/
 
-/*
-float[][] read_from_csv(string filepath) {
-  float[NUM_STATES][NUM_ACTIONS] qtable;
+float** read_from_csv(char* filepath) {
+  float** qtable = new float*[NUM_STATES;
   std::ifstream csv;
   csv.open(filepath);
 
   while (!csv.eof()) {
-    vector<float> row;
+    float* row = new float[NUM_ACTIONS];
     string line, val;
     getline(csv, line);
     std::stringstream ss(line);
@@ -150,14 +158,14 @@ float[][] read_from_csv(string filepath) {
 */
 
 // initializes the q-table
-float** init_qtable(int num_states, int num_actions/*, char[] filepath, */, bool read_csv = false) {
+float** init_qtable(int num_states, int num_actions, const char* filepath, bool read_csv) {
   float** qtable = new float*[num_states];
   if (read_csv)
-    //qtable = read_from_csv(filepath);
+    // qtable = read_from_csv(filepath);
     return qtable;
   else {
     for (int i = 0; i != num_states; i++) {
-        qtable[i] = new float[NUM_ACTIONS];
+        qtable[i] = new float[num_actions];
         for (int j = 0; j != num_actions; j++)
             qtable[i][j] = 0.0;
     }
@@ -212,7 +220,7 @@ float** update_qtable(
     float reward_decay = GAMMA
 ) {
   float old_value = qtable[old_state][action];
-  float max_q = -1000.0;
+  float max_q = -10000.0;
   for (int i = 0; i < NUM_ACTIONS; i++) {
     if (qtable[current_state][i] > max_q) {
       max_q = qtable[current_state][i];
@@ -226,16 +234,35 @@ float** update_qtable(
 }
 
 // determine a reward given the current state
+// NOTE: all distances in CM (ranger values)
+// rewards are arbitrary floats
+// all values determined experimentally
 float get_reward(QState state) {
-  if (state.dist < 0.3 || state.dist2 < 0.1 || state.dist2 > 2.0)
+  /* penalize if:
+   * 1. front wall very close
+   * 2. right wall very close
+   * 3. right wall very far
+   */
+  if (state.dist_f < 3.0 || state.dist_r < 1.0 || state.dist_r > 10.0)
     return -5.0;
-  if (state.dist < 1.0 && state.dist2 < 1.0)
+ 
+  /*
+   * mild reward if:
+   * right wall close, but front wall also close
+   */
+  if (state.dist_f < 10.0 && state.dist_r < 10.0)
     return 1.0;
-  if (state.dist2 < 1.0)
+
+  /*
+   * best reward if:
+   * right wall close, nothing in front
+   */
+  if (state.dist_r < 10.0)
     return 5.0;
 }
 
 /*
+// allow controlling robot via keyboard input
 void keyboard_input(Robot* robot) {
   switch((c=getch())) {
     case KEY_UP:
@@ -260,92 +287,81 @@ void keyboard_input(Robot* robot) {
 }
 */
 
+// setup arduino board
 void setup() {
   Serial.begin(9600);
-  Serial.println("initializing qtable");
-  STATE.qtable = init_qtable(NUM_STATES, NUM_ACTIONS/*, CSV_FILEPATH, READ_CSV*/);
-}
-
-QAction normalize_speed(QAction action) {
-  float rg_min = -40;
-  float rg_max = 200;
-  float gz_min = -1.0;
-  float gz_max = 5.0;
-  float norm_vl = (action.vl - gz_min) / (gz_max - gz_min);
-  float new_vl = norm_vl * (rg_max - rg_min) + rg_min;
-  float norm_vr = (action.vr - gz_min) / (gz_max - gz_min);
-  float new_vr = -1 * (norm_vr * (rg_max - rg_min) + rg_min);
-  // return { map(action.vl, -1.0, 5.0, -200, 200), map(action.vr, -1.0, 5.0, -200, 200) };
-  return { new_vl, new_vr };
-}
-
-float normalize_dist(float rg_dist) {
-  float norm_dist = (rg_dist) / 400.0 * 2.75;
-  return norm_dist;
+  Serial.println("initializing qtable .....");
+  STATE.qtable = init_qtable(NUM_STATES, NUM_ACTIONS, CSV_FILEPATH, false);
 }
 
 void loop() {
-  float dist = normalize_dist(ultra.distanceCm());
-  float dist2 = normalize_dist(ultra2.distanceCm());
-    // increment tick
+  // retrieve current distances
+  float dist_f = ULTRA_F.distanceCm();
+  float dist_r = ULTRA_R.distanceCm();
+  
+  // increment tick
   TICK += 1;
 
+  // if training, only process keyboard input
+  // else, use qtable
+  // NOTE: keyboard functionality not yet enabled
   if (TRAINING)
     // keyboard_input(robot);
     return;
   else {
 
-    // decrease 'randomness' in q-learning after 5000 tick
+    // decrease 'randomness' in q-learning actions after 5000 tick
     if (TICK > 5000)
       EPS = 0.9;
+    // remove 'randomness' in q-learning actions after 15000 tick
+    if (TICK > 10000)
+      EPS = 1.0;
 
     // cache qtable
     /*
     if (TICK % 1000 == 0)
       write_csv(CSV_FILEPATH, STATE.qtable);
-      */
-
+    */
       
     // find the best action to take next
-    QState old_state = { dist, dist2 };
+    QState old_state = { dist_f, dist_r };
     int old_int_state = discretize_state(old_state);
     int next_int_action = choose_action(STATE.qtable, old_state);
     QAction next_action = realize_action(next_int_action);
 
     // safety mechanism for robot getting stuck on wall
-    if (dist < 0.3)
+    if (dist_f < 3.0)
       next_action = { -2.0, -3.0 };
 
     // default behavior when no wall in sight
-    if (dist > 1.8)
+    if (dist_f > 10.0)
       next_action = { 0.5, 4.0 };
 
     // perform that action
-    
     QAction next_rg_action = normalize_speed(next_action);
-    motorL.setMotorPwm(next_rg_action.vl);
-    motorR.setMotorPwm(next_rg_action.vr);
+    MOTOR_L.setMotorPwm(next_rg_action.vl);
+    MOTOR_R.setMotorPwm(next_rg_action.vr);
 
     // measure reward from previous action
     delay(60);
-    float dist = normalize_dist(ultra.distanceCm());
-    float dist2 = normalize_dist(ultra2.distanceCm());
-    QState cur_state = { dist, dist2 };
+    float dist_f = normalize_dist(ULTRA_F.distanceCm());
+    float dist_r = normalize_dist(ULTRA_R.distanceCm());
+    QState cur_state = { dist_f, dist_r };
     int cur_int_state = discretize_state(cur_state);
     float reward = get_reward(cur_state);
 
     // update q table
     STATE.qtable = update_qtable(STATE.qtable, next_int_action, reward, cur_int_state, old_int_state);
 
-
+    // log activity
     Serial.println("tick: " + TICK);
     
     Serial.print("State: ");
     Serial.print(cur_int_state);
     Serial.print(", (");
-    Serial.print(cur_state.dist);
+    Serial.print(cur_state.dist_f);
     Serial.print(", ");
-    Serial.print(cur_state.dist2);
+    Serial.print(cur_state.dist_r);
     Serial.println(")");
     
     Serial.print("action: ");
@@ -364,16 +380,5 @@ void loop() {
     Serial.println(reward);
     
     Serial.println("=====\n");
-    /*
-    cout << "tick: " << TICK << endl;
-    cout << "state: " << cur_int_state << ", " << cur_state.dist << endl;
-    cout << "action: " 
-         << next_int_action 
-         << ", " 
-         << "(" << next_action.vl << ", " << next_action.vr << ")" 
-         << endl;
-    cout << "reward: " << reward << endl;
-    cout << "=====\n" << endl;
-    */
   }
 }
