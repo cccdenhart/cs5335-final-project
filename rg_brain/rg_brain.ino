@@ -28,7 +28,7 @@ const float GAMMA = 0.9;
 const float BASE_VEL = 2.0;
 const float MIN_VEL = -3.0;
 const float MAX_VEL = 3.0;
-const int NUM_STATES = 20;
+const int NUM_STATES = 36;
 const int NUM_ACTIONS = 20;
 bool TRAINING = false;
 float EPS = 0.3;
@@ -78,9 +78,9 @@ int discretize_state(QState state) {
   int norm = floor(dist / max_dist * root_states);
 
   float dist2 = clamp(0.0, state.dist, max_dist);
-  int norm2 = floor(dist / max_dist * root);
+  int norm2 = floor(dist / max_dist * root_states);
 
-  return norm;
+  return norm * norm2;
 }
 
 // converts a raw action representation to an integer representation
@@ -216,18 +216,12 @@ float** update_qtable(
 
 // determine a reward given the current state
 float get_reward(QState state) {
-  if (state.dist < 0.3)
+  if (state.dist < 0.3 || state.dist2 < 0.1 || state.dist2 > 2.0)
     return -5.0;
-  else if (state.dist < 0.6)
-    return -1.0;
-  else if (state.dist < 1.0)
+  if (state.dist < 1.0 && state.dist2 < 1.0)
     return 1.0;
-  else if (state.dist < 1.5)
+  if (state.dist2 < 1.0)
     return 5.0;
-  else if (state.dist < 2.5)
-    return 1.0;
-  else
-    return -5.0;
 }
 
 /*
@@ -302,7 +296,7 @@ void loop() {
 
       
     // find the best action to take next
-    QState old_state = { dist };
+    QState old_state = { dist, dist2 };
     int old_int_state = discretize_state(old_state);
     int next_int_action = choose_action(STATE.qtable, old_state);
     QAction next_action = realize_action(next_int_action);
@@ -322,7 +316,10 @@ void loop() {
     motorR.setMotorPwm(next_rg_action.vr);
 
     // measure reward from previous action
-    QState cur_state = { dist };
+    delay(600);
+    float dist = normalize_dist(ultra.distanceCm());
+    float dist2 = normalize_dist(ultra2.distanceCm());
+    QState cur_state = { dist, dist2 };
     int cur_int_state = discretize_state(cur_state);
     float reward = get_reward(cur_state);
 
@@ -334,8 +331,11 @@ void loop() {
     
     Serial.print("State: ");
     Serial.print(cur_int_state);
+    Serial.print(", (");
+    Serial.print(cur_state.dist);
     Serial.print(", ");
-    Serial.println(cur_state.dist);
+    Serial.print(cur_state.dist2);
+    Serial.println(")");
     
     Serial.print("action: ");
     Serial.print(next_int_action);
@@ -353,7 +353,6 @@ void loop() {
     Serial.println(reward);
     
     Serial.println("=====\n");
-    delay(600);
     /*
     cout << "tick: " << TICK << endl;
     cout << "state: " << cur_int_state << ", " << cur_state.dist << endl;
