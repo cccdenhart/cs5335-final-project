@@ -187,7 +187,7 @@ float get_reward(QState state) {
 		return -1.0;
 	else if (state.dist < 1.0)
 		return 1.0;
-	else if (state.dist < 1.7)
+	else if (state.dist < 1.5)
 		return 5.0;
 	else if (state.dist < 2.5)
 		return 1.0;
@@ -251,7 +251,7 @@ void callback(Robot* robot) {
 			next_action = { -2.0, -3.0 };
 
 		// default behavior when no wall in sight
-		if (robot->get_range()[0] > 2.0)
+		if (robot->get_range()[0] > 1.8)
 			next_action = { 0.5, 4.0 };
 
 		// perform that action	
