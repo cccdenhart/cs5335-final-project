@@ -243,21 +243,21 @@ float get_reward(QState state) {
    * 2. right wall very close
    * 3. right wall very far
    */
-  if (state.dist_f < 3.0 || state.dist_r < 1.0 || state.dist_r > 10.0)
+  if (state.dist_f < 5.0 || state.dist_r < 5.0 || state.dist_r > 20.0)
     return -5.0;
  
   /*
    * mild reward if:
    * right wall close, but front wall also close
    */
-  if (state.dist_f < 10.0 && state.dist_r < 10.0)
+  if (state.dist_f < 20.0 && state.dist_r < 20.0)
     return 1.0;
 
   /*
    * best reward if:
    * right wall close, nothing in front
    */
-  if (state.dist_r < 10.0)
+  if (state.dist_r < 20.0)
     return 5.0;
 }
 
@@ -330,12 +330,8 @@ void loop() {
     QAction next_action = realize_action(next_int_action);
 
     // safety mechanism for robot getting stuck on wall
-    if (dist_f < 3.0)
-      next_action = { -2.0, -3.0 };
-
-    // default behavior when no wall in sight
-    if (dist_f > 10.0)
-      next_action = { 0.5, 4.0 };
+    if (dist_f < 5.0)
+      next_action = { -100.0, -200.0 };
 
     // perform that action
     MOTOR_L.setMotorPwm(next_action.vl);
