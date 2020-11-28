@@ -1,3 +1,14 @@
+/*
+ * TODO:
+ * - clean up file
+ * - add key condition (short on both sonars, line follower on) + track keys
+ * - convert distances to CM
+ * - incorporate sound
+ * - presentation + project text file
+ */
+
+
+
 // #include <iostream>
 //#include <string>
 //#include <filesystem>
@@ -302,7 +313,7 @@ void loop() {
     QAction next_action = realize_action(next_int_action);
 
     // safety mechanism for robot getting stuck on wall
-    if (dist < 0.1)
+    if (dist < 0.3)
       next_action = { -2.0, -3.0 };
 
     // default behavior when no wall in sight
@@ -316,7 +327,7 @@ void loop() {
     motorR.setMotorPwm(next_rg_action.vr);
 
     // measure reward from previous action
-    delay(600);
+    delay(60);
     float dist = normalize_dist(ultra.distanceCm());
     float dist2 = normalize_dist(ultra2.distanceCm());
     QState cur_state = { dist, dist2 };
