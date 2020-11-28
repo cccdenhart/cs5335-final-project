@@ -338,14 +338,13 @@ void loop() {
       next_action = { 0.5, 4.0 };
 
     // perform that action
-    QAction next_rg_action = normalize_speed(next_action);
-    MOTOR_L.setMotorPwm(next_rg_action.vl);
-    MOTOR_R.setMotorPwm(next_rg_action.vr);
+    MOTOR_L.setMotorPwm(next_action.vl);
+    MOTOR_R.setMotorPwm(next_action.vr);
 
     // measure reward from previous action
     delay(60);
-    float dist_f = normalize_dist(ULTRA_F.distanceCm());
-    float dist_r = normalize_dist(ULTRA_R.distanceCm());
+    float dist_f = ULTRA_F.distanceCm();
+    float dist_r = ULTRA_R.distanceCm();
     QState cur_state = { dist_f, dist_r };
     int cur_int_state = discretize_state(cur_state);
     float reward = get_reward(cur_state);
@@ -370,10 +369,6 @@ void loop() {
     Serial.print(next_action.vl);
     Serial.print(", ");
     Serial.print(next_action.vr);
-    Serial.print(" ), (");
-    Serial.print(next_rg_action.vl);
-    Serial.print(", ");
-    Serial.print(next_rg_action.vr);
     Serial.println(")");
 
     Serial.print("reward: ");
