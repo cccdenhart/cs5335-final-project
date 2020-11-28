@@ -251,8 +251,10 @@ void callback(Robot* robot) {
 			next_action = { -2.0, -3.0 };
 
 		// default behavior when no wall in sight
+		/*
 		if (robot->get_range()[0] > 1.8)
 			next_action = { 0.5, 4.0 };
+		*/
 
 		// perform that action	
 		robot->set_vel(next_action.vl, next_action.vr);

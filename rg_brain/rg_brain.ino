@@ -29,8 +29,8 @@ const float GZ_MAX_VEL = 3.0;  // gazebo most postive amount CHANGED from base v
 const float RG_BASE_VEL = 100.0;  // ranger base velocity
 const float RG_MIN_VEL = -150.0;  // ranger most negative amount CHANGED from base vel
 const float RG_MAX_VEL = 150.0;  // ranger most positive amount CHANGED from base vel
-const float RG_MAX_DIST = 75.0;  // ranger max distance considered for state
-const int NUM_STATES = 36;  // number of state (distance) intervals used in qtable
+const float RG_MAX_DIST = 200.0;  // ranger max distance considered for state
+const int NUM_STATES = 64;  // number of state (distance) intervals used in qtable
 const int NUM_ACTIONS = 20;  // number of action (vl - vr) intervals used in qtable 
 bool TRAINING = false;
 float EPS = 0.3;
@@ -59,6 +59,7 @@ struct QAction {
 // a representation of the world state
 struct WorldState {
   float** qtable;
+  int remaining_keys = 5;
 };
 
 WorldState STATE;
@@ -76,10 +77,10 @@ int discretize_state(QState state) {
   int root_states = floor(sqrt(NUM_STATES));
   
   float dist_f = clamp(0.0, state.dist_f, RG_MAX_DIST);
-  int norm_f = floor(dist_f / RG_MAX_DIST * root_states);
+  int norm_f = ceil((dist_f / RG_MAX_DIST) * root_states);
 
   float dist_r = clamp(0.0, state.dist_r, RG_MAX_DIST);
-  int norm_r = floor(dist_r / RG_MAX_DIST * root_states);
+  int norm_r = ceil((dist_r / RG_MAX_DIST) * root_states);
 
   return norm_f * norm_r;
 }
@@ -237,7 +238,7 @@ float** update_qtable(
 // NOTE: all distances in CM (ranger values)
 // rewards are arbitrary floats
 // all values determined experimentally
-float get_reward(QState state) {
+float get_reward(QState state, QAction action) {
   /* penalize if:
    * 1. front wall very close
    * 2. right wall very close
@@ -246,19 +247,15 @@ float get_reward(QState state) {
   if (state.dist_f < 5.0 || state.dist_r < 5.0 || state.dist_r > 20.0)
     return -5.0;
  
-  /*
-   * mild reward if:
-   * right wall close, but front wall also close
-   */
-  if (state.dist_f < 20.0 && state.dist_r < 20.0)
+  if (state.dist_r < 20.0) {
+    // best reward if wall close and positive velocity
+    if (action.vl > 0 && action.vr > 0)
+      return 5.0;
+    // otherwise, return mild reward
     return 1.0;
+  }
 
-  /*
-   * best reward if:
-   * right wall close, nothing in front
-   */
-  if (state.dist_r < 20.0)
-    return 5.0;
+  return 0;
 }
 
 /*
@@ -286,6 +283,8 @@ void keyboard_input(Robot* robot) {
   } 
 }
 */
+
+void check_key(
 
 // setup arduino board
 void setup() {
@@ -343,7 +342,7 @@ void loop() {
     float dist_r = ULTRA_R.distanceCm();
     QState cur_state = { dist_f, dist_r };
     int cur_int_state = discretize_state(cur_state);
-    float reward = get_reward(cur_state);
+    float reward = get_reward(cur_state, next_action);
 
     // update q table
     STATE.qtable = update_qtable(STATE.qtable, next_int_action, reward, cur_int_state, old_int_state);
