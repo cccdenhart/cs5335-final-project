@@ -311,10 +311,10 @@ void loop() {
   else {
 
     // decrease 'randomness' in q-learning actions after 5000 tick
-    if (TICK > 5000)
+    if (TICK > 100)
       EPS = 0.9;
     // remove 'randomness' in q-learning actions after 15000 tick
-    if (TICK > 10000)
+    if (TICK > 500)
       EPS = 1.0;
 
     // cache qtable
@@ -349,27 +349,26 @@ void loop() {
     STATE.qtable = update_qtable(STATE.qtable, next_int_action, reward, cur_int_state, old_int_state);
 
     // log activity
-    Serial.println("tick: " + TICK);
+    Serial.print("tick: ");
+    Serial.print(TICK);
     
-    Serial.print("State: ");
+    Serial.print("\tstate: ");
     Serial.print(cur_int_state);
     Serial.print(", (");
     Serial.print(cur_state.dist_f);
     Serial.print(", ");
     Serial.print(cur_state.dist_r);
-    Serial.println(")");
+    Serial.print(")");
     
-    Serial.print("action: ");
+    Serial.print("\taction: ");
     Serial.print(next_int_action);
     Serial.print(", (");
     Serial.print(next_action.vl);
     Serial.print(", ");
     Serial.print(next_action.vr);
-    Serial.println(")");
+    Serial.print(")");
 
-    Serial.print("reward: ");
+    Serial.print("\treward: ");
     Serial.println(reward);
-    
-    Serial.println("=====\n");
   }
 }
