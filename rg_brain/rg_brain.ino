@@ -32,7 +32,7 @@ const float RG_MIN_VEL = -150.0;  // ranger most negative amount CHANGED from ba
 const float RG_MAX_VEL = 150.0;  // ranger most positive amount CHANGED from base vel
 const float RG_MAX_DIST = 100.0;  // ranger max distance considered for state
 const int NUM_STATES = 64;  // number of state (distance) intervals used in qtable
-const int NUM_ACTIONS = 20;  // number of action (vl - vr) intervals used in qtable
+const int NUM_ACTIONS = 10;  // number of action (vl - vr) intervals used in qtable
 bool TRAINING = false;
 float EPS = 0.3;
 int TICK = 0;
@@ -45,7 +45,6 @@ float reward = 0;
 float cur_vr = 0;
 float cur_vl = 0;
 float** qtable;
-int remaining_keys = 5;
 float old_dist_r = 0;
 float old_dist_f = 0;
   
@@ -67,7 +66,7 @@ MeLineFollower lineSensor(PORT_10);
 const float MAX_HALL = 15.0;
 bool INSIDE = false;
 bool DONE = false;
-int keyCount = 0;
+int key_count = 0;
 
 MeEncoderOnBoard MOTOR_R(SLOT_1);
 MeEncoderOnBoard MOTOR_L(SLOT_2);
@@ -326,7 +325,7 @@ void checkKey(float dist_f, float dist_r) {
   if (INSIDE == true && DONE == false) {
     if (lineSensor.readSensors() == 0) {
       DONE = true;
-      remaining_keys -= 1;
+      key_count += 1;
       // leds.setColorAt(keyCount);
       // siren.tone(784, 50);
       // siren.tone(1046, 100);
@@ -384,7 +383,7 @@ void loop() {
       }
 
     // check for a key
-    // checkKey(dist_f, dist_r);
+    checkKey(dist_f, dist_r);
 
     // cache qtable
     /*
@@ -423,7 +422,7 @@ void loop() {
     update_qtable(qtable, next_int_action, reward, cur_int_state, old_int_state);
 
     // log activity
-      Serial.print("tick: ");
+      /*Serial.print("tick: ");
       Serial.print(TICK);
 
       Serial.print("\tstate: ");
@@ -443,6 +442,16 @@ void loop() {
       Serial.print(")");
 
       Serial.print("\treward: ");
-      Serial.println(reward);
+      Serial.println(reward);*/
+
+      /*Serial.print(dist_f);
+      Serial.print(", ");
+      Serial.print(dist_r);
+      Serial.print("\tInside: ");
+      Serial.print(INSIDE);
+      Serial.print("\tDone: ");
+      Serial.print(DONE);
+      Serial.print("\tKey count: ");
+      Serial.println(key_count);*/
   }
 }
