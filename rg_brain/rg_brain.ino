@@ -27,9 +27,9 @@ const float GAMMA = 0.9;
 const float GZ_BASE_VEL = 2.0;  // gazebo base velocity
 const float GZ_MIN_VEL = -3.0;  // gazebo most negative amount CHANGED from base vel
 const float GZ_MAX_VEL = 3.0;  // gazebo most postive amount CHANGED from base vel
-const float RG_BASE_VEL = 50.0;  // ranger base velocity
-const float RG_MIN_VEL = -100.0;  // ranger most negative amount CHANGED from base vel
-const float RG_MAX_VEL = 100.0;  // ranger most positive amount CHANGED from base vel
+const float RG_BASE_VEL = 100.0;  // ranger base velocity
+const float RG_MIN_VEL = -150.0;  // ranger most negative amount CHANGED from base vel
+const float RG_MAX_VEL = 150.0;  // ranger most positive amount CHANGED from base vel
 const float RG_MAX_DIST = 100.0;  // ranger max distance considered for state
 const int NUM_STATES = 64;  // number of state (distance) intervals used in qtable
 const int NUM_ACTIONS = 20;  // number of action (vl - vr) intervals used in qtable
@@ -46,6 +46,8 @@ float cur_vr = 0;
 float cur_vl = 0;
 float** qtable;
 int remaining_keys = 5;
+float old_dist_r = 0;
+float old_dist_f = 0;
   
 // Led Ring
 MeRGBLed leds(0);
@@ -274,17 +276,16 @@ float get_reward() {
      2. right wall very close
      3. right wall very far
   */
-  if (dist_f < 70.0 || dist_r < 10.0 || dist_r > 20.0)
-    return -5.0;
 
-  if (dist_r < 20.0) {
-    // best reward if wall close and positive velocity
-    if (cur_vl > 0 && cur_vr > 0)
+  if (dist_r < 20.0 && dist_r > 5.0 && dist_f > 15.0) {
+    if ((old_dist_f > dist_f) && (old_dist_r > dist_r)) {
       return 5.0;
-    // otherwise, return mild reward
+    }
     return 1.0;
   }
-  
+
+  if (dist_f < 15.0 || dist_r < 10.0 || dist_r > 20.0)
+    return -5.0;
 
   return 0;
 }
@@ -352,6 +353,10 @@ void loop() {
   delay(50);
   dist_f = ULTRA_F.distanceCm();
   dist_r = ULTRA_R.distanceCm();
+
+  old_dist_r = dist_r;
+  old_dist_f = dist_f;
+
   led.setColor(0, 50, 0, 0);
   led.show();
   // increment tick
@@ -367,13 +372,13 @@ void loop() {
 
     // decrease 'randomness' in q-learning actions after 5000 tick
     if (TICK > 100) {
-      EPS = 0.9;
+      EPS = 0.7;
       led.setColor(0, 0, 50, 0);
       led.show();
     }
     // remove 'randomness' in q-learning actions after 15000 tick
     if (TICK > 500){
-      EPS = 1.0;
+      EPS = 0.9;
       led.setColor(0,0,0,50);
       led.show();
       }
@@ -394,22 +399,25 @@ void loop() {
     realize_action(next_int_action);
 
     // safety mechanism for robot getting stuck on wall
-    if (dist_f < 10.0) {
+    if (dist_f < 20.0) {
       cur_vl = -200.0;
       cur_vr = -100.0;
-    }
+      reward = 0; 
+      MOTOR_L.setMotorPwm(cur_vl);
+      MOTOR_R.setMotorPwm(cur_vr);
+    } else {
 
     // perform that action
     MOTOR_L.setMotorPwm(cur_vl);
     MOTOR_R.setMotorPwm(cur_vr);
 
     // measure reward from previous action
-    delay(60);
+    delay(150);
     dist_f = ULTRA_F.distanceCm();
     dist_r = ULTRA_R.distanceCm();
     // struct QState cur_state = { dist_f, dist_r };
     cur_int_state = discretize_state(dist_f, dist_r);
-    reward = get_reward();
+    reward = get_reward(); }
 
     // update q table
     update_qtable(qtable, next_int_action, reward, cur_int_state, old_int_state);
