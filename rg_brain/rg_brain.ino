@@ -42,7 +42,11 @@ int old_int_state = 0;
 int next_int_action = 0; 
 int cur_int_state = 0;
 float reward = 0;
-
+float cur_vr = 0;
+float cur_vl = 0;
+float** qtable;
+int remaining_keys = 5;
+  
 // Led Ring
 MeRGBLed leds(0);
 #define LEDNUM 12
@@ -71,6 +75,8 @@ MeLineFollower lineSensorFront(PORT_10);
 MeUltrasonicSensor ULTRA_F(PORT_9);
 MeUltrasonicSensor ULTRA_R(PORT_7);
 
+/*
+
 // a raw representation of a robot state
 struct QState {
   float dist_f;
@@ -85,11 +91,12 @@ struct QAction {
 
 // a representation of the world state
 struct WorldState {
-  float** qtable;
-  int remaining_keys = 5;
+  
 };
 
+
 WorldState STATE;
+*/
 
 // limit the given value between the given min/max
 float clamp(float xmin, float xx, float xmax) {
@@ -100,35 +107,39 @@ float clamp(float xmin, float xx, float xmax) {
 
 // converts a raw state representation to an integer representation
 // (usable by the Q-Table)
-int discretize_state(struct QState state) {
+int discretize_state(float dist_f, float dist_r) {
   int root_states = floor(sqrt(NUM_STATES));
 
-  float dist_f_local = clamp(0.0, state.dist_f, RG_MAX_DIST);
-  int norm_f = floor((dist_f_local / RG_MAX_DIST) * root_states);
+  float dist_f_local = clamp(0.0, dist_f, RG_MAX_DIST);
+  int norm_f = floor(dist_f_local / RG_MAX_DIST) * (root_states - 1);
 
-  float dist_r_local = clamp(0.0, state.dist_r, RG_MAX_DIST);
-  int norm_r = floor((dist_r_local / RG_MAX_DIST) * root_states);
+  float dist_r_local = clamp(0.0, dist_r, RG_MAX_DIST);
+  int norm_r = floor(dist_r_local / RG_MAX_DIST) * (root_states - 1);
 
-  return norm_f + root_states * norm_r;
+  float result = norm_f + root_states * norm_r;
+
+  return result;
 }
 
 // converts a raw action representation to an integer representation
 // (usable by the Q-Table)
-int discretize_action(struct QAction action) {
-  float diff = clamp(RG_BASE_VEL + RG_MIN_VEL, action.vl - action.vr, RG_BASE_VEL + RG_MAX_VEL);
+int discretize_action(float vl, float vr) {
+  float diff = clamp(RG_BASE_VEL + RG_MIN_VEL, vl - vr, RG_BASE_VEL + RG_MAX_VEL);
   int norm = floor((diff - RG_MIN_VEL) / (RG_MAX_VEL - RG_MIN_VEL) * NUM_ACTIONS);
   return norm;
 }
 
 // convert an integer action representation to a QAction
 // (usable for performing the action)
-struct QAction realize_action(int int_action) {
+void realize_action(int int_action) {
   float diff = ((int_action * 1.0 / NUM_ACTIONS) * (RG_MAX_VEL - RG_MIN_VEL)) + RG_MIN_VEL;
   float vl = RG_BASE_VEL - diff;
-  float vr = RG_BASE_VEL + diff;
-  return { vl, vr };
+  float vr = (RG_BASE_VEL + diff) * -1.0;
+  cur_vl = vl;
+  cur_vr = vr;
 }
 
+/*
 // convert gazebo action values to ranger action values
 struct QAction normalize_speed(QAction action) {
   float rg_min = -40;
@@ -148,6 +159,7 @@ float normalize_dist(float rg_dist) {
   float norm_dist = (rg_dist) / 400.0 * 2.75;
   return norm_dist;
 }
+*/
 
 /*
   void write_csv(char* filepath, float** qtable) {
@@ -186,19 +198,13 @@ float normalize_dist(float rg_dist) {
 */
 
 // initializes the q-table
-float** init_qtable(int num_states, int num_actions, const char* filepath, bool read_csv) {
-  float** qtable = new float*[num_states];
-  if (read_csv)
-    // qtable = read_from_csv(filepath);
-    return qtable;
-  else {
-    for (int i = 0; i != num_states; i++) {
-      qtable[i] = new float[num_actions];
-      for (int j = 0; j != num_actions; j++)
-        qtable[i][j] = 0.0;
-    }
+void init_qtable(int num_states, int num_actions, const char* filepath, bool read_csv) {
+  qtable = new float*[num_states];
+  for (int i = 0; i != num_states; i++) {
+    qtable[i] = new float[num_actions];
+    for (int j = 0; j != num_actions; j++)
+      qtable[i][j] = 0.0;
   }
-  return qtable;
 }
 
 // choose a random number between 0 and 1
@@ -211,11 +217,10 @@ float rand_uniform() {
 // at a rate set by `eps`
 int choose_action(
   float** qtable,
-  struct QState state,
+  int int_state,
   float eps = EPS
 ) {
 
-  int int_state = discretize_state(state);
   int int_action;
   float rand_val = rand_uniform();
 
@@ -263,18 +268,18 @@ void update_qtable(
 // NOTE: all distances in CM (ranger values)
 // rewards are arbitrary floats
 // all values determined experimentally
-float get_reward(struct QState state, struct QAction action) {
+float get_reward() {
   /* penalize if:
      1. front wall very close
      2. right wall very close
      3. right wall very far
   */
-  if (state.dist_f < 70.0 || state.dist_r < 10.0 || state.dist_r > 20.0)
+  if (dist_f < 70.0 || dist_r < 10.0 || dist_r > 20.0)
     return -5.0;
 
-  if (state.dist_r < 20.0) {
+  if (dist_r < 20.0) {
     // best reward if wall close and positive velocity
-    if (action.vl > 0 && action.vr > 0)
+    if (cur_vl > 0 && cur_vr > 0)
       return 5.0;
     // otherwise, return mild reward
     return 1.0;
@@ -320,7 +325,7 @@ void checkKey(float dist_f, float dist_r) {
   if (INSIDE == true && DONE == false) {
     if (lineSensor.readSensors() == 0) {
       DONE = true;
-      STATE.remaining_keys -= 1;
+      remaining_keys -= 1;
       // leds.setColorAt(keyCount);
       // siren.tone(784, 50);
       // siren.tone(1046, 100);
@@ -335,7 +340,7 @@ void setup() {
   Serial.begin(9600);
   led.setpin(44);
   Serial.println("initializing qtable .....");
-  STATE.qtable = init_qtable(NUM_STATES, NUM_ACTIONS, CSV_FILEPATH, false);
+  init_qtable(NUM_STATES, NUM_ACTIONS, CSV_FILEPATH, false);
   /*leds.setpin(LEDPORT);
   leds.setNumber(LEDNUM);
   leds.setColor(OFF);
@@ -383,29 +388,31 @@ void loop() {
     */
 
     // find the best action to take next
-    struct QState old_state = { dist_f, dist_r };
-    old_int_state = discretize_state(old_state);
-    next_int_action = choose_action(STATE.qtable, old_state);
-    struct QAction next_action = realize_action(next_int_action);
+    // struct QState old_state = { dist_f, dist_r };
+    old_int_state = discretize_state(dist_f, dist_r);
+    next_int_action = choose_action(qtable, old_int_state);
+    realize_action(next_int_action);
 
     // safety mechanism for robot getting stuck on wall
-    if (dist_f < 10.0)
-      next_action = { -200.0, -100.0 };
+    if (dist_f < 10.0) {
+      cur_vl = -200.0;
+      cur_vr = -100.0;
+    }
 
     // perform that action
-    MOTOR_L.setMotorPwm(next_action.vl);
-    MOTOR_R.setMotorPwm(next_action.vr);
+    MOTOR_L.setMotorPwm(cur_vl);
+    MOTOR_R.setMotorPwm(cur_vr);
 
     // measure reward from previous action
-    delay(600);
+    delay(60);
     dist_f = ULTRA_F.distanceCm();
     dist_r = ULTRA_R.distanceCm();
-    struct QState cur_state = { dist_f, dist_r };
-    cur_int_state = discretize_state(cur_state);
-    reward = get_reward(cur_state, next_action);
+    // struct QState cur_state = { dist_f, dist_r };
+    cur_int_state = discretize_state(dist_f, dist_r);
+    reward = get_reward();
 
     // update q table
-    update_qtable(STATE.qtable, next_int_action, reward, cur_int_state, old_int_state);
+    update_qtable(qtable, next_int_action, reward, cur_int_state, old_int_state);
 
     // log activity
       Serial.print("tick: ");
@@ -414,17 +421,17 @@ void loop() {
       Serial.print("\tstate: ");
       Serial.print(cur_int_state);
       Serial.print(", (");
-      Serial.print(cur_state.dist_f);
+      Serial.print(dist_f);
       Serial.print(", ");
-      Serial.print(cur_state.dist_r);
+      Serial.print(dist_r);
       Serial.print(")");
 
       Serial.print("\taction: ");
       Serial.print(next_int_action);
       Serial.print(", (");
-      Serial.print(next_action.vl);
+      Serial.print(cur_vl);
       Serial.print(", ");
-      Serial.print(next_action.vr);
+      Serial.print(cur_vr);
       Serial.print(")");
 
       Serial.print("\treward: ");
