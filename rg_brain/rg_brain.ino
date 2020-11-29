@@ -32,14 +32,14 @@ const float RG_MIN_VEL = -150.0;  // ranger most negative amount CHANGED from ba
 const float RG_MAX_VEL = 150.0;  // ranger most positive amount CHANGED from base vel
 const float RG_MAX_DIST = 100.0;  // ranger max distance considered for state
 const int NUM_STATES = 64;  // number of state (distance) intervals used in qtable
-const int NUM_ACTIONS = 10;  // number of action (vl - vr) intervals used in qtable
+const int NUM_ACTIONS = 12;  // number of action (vl - vr) intervals used in qtable
 bool TRAINING = false;
-float EPS = 0.3;
+float EPS = 0.7;
 int TICK = 0;
 float dist_f = 0;
 float dist_r = 0;
-int old_int_state = 0; 
-int next_int_action = 0; 
+int old_int_state = 0;
+int next_int_action = 0;
 int cur_int_state = 0;
 float reward = 0;
 float cur_vr = 0;
@@ -47,7 +47,7 @@ float cur_vl = 0;
 float** qtable;
 float old_dist_r = 0;
 float old_dist_f = 0;
-  
+
 // Led Ring
 MeRGBLed leds(0);
 #define LEDNUM 12
@@ -78,26 +78,37 @@ MeUltrasonicSensor ULTRA_R(PORT_7);
 
 /*
 
-// a raw representation of a robot state
-struct QState {
+  // a raw representation of a robot state
+  struct QState {
   float dist_f;
   float dist_r;
-};
+  };
 
-// a raw representation of a robot action
-struct QAction {
+  // a raw representation of a robot action
+  struct QAction {
   float vl;
   float vr;
-};
+  };
 
-// a representation of the world state
-struct WorldState {
-  
-};
+  // a representation of the world state
+  struct WorldState {
+
+  };
 
 
-WorldState STATE;
+  WorldState STATE;
 */
+
+void print_qtable(float** qtable) {
+  for (int i = 0; i < NUM_STATES; i++) {
+    for (int j = 0; j < NUM_ACTIONS; j++) {
+      Serial.print((int)qtable[i][j]);
+      Serial.print('|');
+    }
+    Serial.println();
+  }
+  Serial.println();
+}
 
 // limit the given value between the given min/max
 float clamp(float xmin, float xx, float xmax) {
@@ -132,17 +143,98 @@ int discretize_action(float vl, float vr) {
 
 // convert an integer action representation to a QAction
 // (usable for performing the action)
-void realize_action(int int_action) {
+/*void realize_action(int int_action) {
   float diff = ((int_action * 1.0 / NUM_ACTIONS) * (RG_MAX_VEL - RG_MIN_VEL)) + RG_MIN_VEL;
   float vl = RG_BASE_VEL - diff;
   float vr = (RG_BASE_VEL + diff) * -1.0;
   cur_vl = vl;
   cur_vr = vr;
+  }*/
+void realize_action(int int_action) {
+  switch (int_action) {
+    case 0:
+      cur_vl = -170;
+      cur_vr = 250;
+      break;
+    case 1:
+      cur_vl = -120;
+      cur_vr = 230;
+      break;
+    case 2:
+      cur_vl = 100;
+      cur_vr = 210;
+      break;
+    case 3:
+      cur_vl = 120;
+      cur_vr = 190;
+      break;
+    case 4:
+      cur_vl = 100;
+      cur_vr = 170;
+      break;
+    case 5:
+      cur_vl = 230;
+      cur_vr = 230;
+      break;
+    case 6:
+      cur_vl = 170;
+      cur_vr = 100;
+      break;
+    case 7:
+      cur_vl = 190;
+      cur_vr = 120;
+    case 8:
+      cur_vl = 210;
+      cur_vr = 100;
+      break;
+    case 9:
+      cur_vl = 230;
+      cur_vr = -120;
+      break;
+    case 10:
+      cur_vl = 250;
+      cur_vr = -170;
+      break;
+    case 11:
+      cur_vl = -150;
+      cur_vr = -150;
+      break;
+  }
+  cur_vr = cur_vr * -1.0;
 }
+/*void realize_action(int int_action) {
+  switch (int_action) {
+      int pwm = 220;
+    case 0:    // move forward
+      cur_vl = pwm;
+      cur_vr = -pwm;
+      break;
+    case 1:     // Hard left
+      cur_vl = pwm - pwm / 2;
+      cur_vr = -pwm;
+      break;
+    case 2:     // Hard right
+      cur_vl = pwm;
+      cur_vr = -pwm + pwm / 2;
+      break;
+    case 3:     // Veer left
+      cur_vl = pwm - pwm / 3;
+      cur_vr = -pwm;
+      break;
+    case 4:     // Veer right
+      cur_vl = pwm;
+      cur_vr = -pwm + pwm / 3;
+      break;
+    case 5:     // Swirl
+      cur_vl = pwm;
+      cur_vr = -pwm;
+      break;
+  }
+  }*/
 
 /*
-// convert gazebo action values to ranger action values
-struct QAction normalize_speed(QAction action) {
+  // convert gazebo action values to ranger action values
+  struct QAction normalize_speed(QAction action) {
   float rg_min = -40;
   float rg_max = 200;
   float gz_min = -1.0;
@@ -153,13 +245,13 @@ struct QAction normalize_speed(QAction action) {
   float new_vr = -1 * (norm_vr * (rg_max - rg_min) + rg_min);
   // return { map(action.vl, -1.0, 5.0, -200, 200), map(action.vr, -1.0, 5.0, -200, 200) };
   return { new_vl, new_vr };
-}
+  }
 
-// convert gazebo distance values to ranger distance values
-float normalize_dist(float rg_dist) {
+  // convert gazebo distance values to ranger distance values
+  float normalize_dist(float rg_dist) {
   float norm_dist = (rg_dist) / 400.0 * 2.75;
   return norm_dist;
-}
+  }
 */
 
 /*
@@ -271,9 +363,9 @@ void update_qtable(
 // all values determined experimentally
 float get_reward() {
   /* penalize if:
-     1. front wall very close
-     2. right wall very close
-     3. right wall very far
+    1. front wall very close
+    2. right wall very close
+    3. right wall very far
   */
 
   if (dist_r < 20.0 && dist_r > 5.0 && dist_f > 15.0) {
@@ -283,7 +375,14 @@ float get_reward() {
     return 1.0;
   }
 
-  if (dist_f < 15.0 || dist_r < 10.0 || dist_r > 20.0)
+  if (dist_f < 15.0) {
+    if (old_dist_f > dist_f)
+      return 1.0;
+    else
+      return -5.0;
+  }
+
+  if (dist_r < 10.0 || dist_r > 20.0)
     return -5.0;
 
   return 0;
@@ -318,19 +417,20 @@ float get_reward() {
 void checkKey(float dist_f, float dist_r) {
   if (dist_f < MAX_HALL && dist_r < MAX_HALL) {
     INSIDE = true;
+  } else if (dist_f > 150 || dist_r > 150) {
+    DONE = false;
   } else {
     INSIDE = false;
   }
 
   if (INSIDE == true && DONE == false) {
     if (lineSensor.readSensors() == 0) {
-      DONE = true;
       key_count += 1;
-      // leds.setColorAt(keyCount);
+      DONE = true;
+      led.setColor(key_count, 0, 50, 50);
+      led.show();
       // siren.tone(784, 50);
       // siren.tone(1046, 100);
-    } else {
-      DONE = false;
     }
   }
 }
@@ -338,13 +438,14 @@ void checkKey(float dist_f, float dist_r) {
 // setup arduino board
 void setup() {
   Serial.begin(9600);
+  print_qtable(qtable);
   led.setpin(44);
   Serial.println("initializing qtable .....");
-  init_qtable(NUM_STATES, NUM_ACTIONS, CSV_FILEPATH, false);
+  //init_qtable(NUM_STATES, NUM_ACTIONS, CSV_FILEPATH, false);
   /*leds.setpin(LEDPORT);
-  leds.setNumber(LEDNUM);
-  leds.setColor(OFF);
-  leds.show();*/
+    leds.setNumber(LEDNUM);
+    leds.setColor(OFF);
+    leds.show();*/
 }
 
 void loop() {
@@ -370,17 +471,17 @@ void loop() {
   else {
 
     // decrease 'randomness' in q-learning actions after 5000 tick
-    if (TICK > 100) {
+    if (TICK > 500) {
       EPS = 0.7;
       led.setColor(0, 0, 50, 0);
       led.show();
     }
     // remove 'randomness' in q-learning actions after 15000 tick
-    if (TICK > 500){
+    if (TICK > 1000) {
       EPS = 0.9;
-      led.setColor(0,0,0,50);
+      led.setColor(0, 0, 0, 50);
       led.show();
-      }
+    }
 
     // check for a key
     checkKey(dist_f, dist_r);
@@ -398,53 +499,55 @@ void loop() {
     realize_action(next_int_action);
 
     // safety mechanism for robot getting stuck on wall
-    if (dist_f < 20.0) {
+    if (dist_f < 20) {
       cur_vl = -200.0;
       cur_vr = -100.0;
-      reward = 0; 
+      reward = 0;
       MOTOR_L.setMotorPwm(cur_vl);
       MOTOR_R.setMotorPwm(cur_vr);
+      delay(200);
     } else {
 
-    // perform that action
-    MOTOR_L.setMotorPwm(cur_vl);
-    MOTOR_R.setMotorPwm(cur_vr);
+      // perform that action
+      MOTOR_L.setMotorPwm(cur_vl);
+      MOTOR_R.setMotorPwm(cur_vr);
 
-    // measure reward from previous action
-    delay(150);
-    dist_f = ULTRA_F.distanceCm();
-    dist_r = ULTRA_R.distanceCm();
-    // struct QState cur_state = { dist_f, dist_r };
-    cur_int_state = discretize_state(dist_f, dist_r);
-    reward = get_reward(); }
+      // measure reward from previous action
+      delay(300);
+      dist_f = ULTRA_F.distanceCm();
+      dist_r = ULTRA_R.distanceCm();
+      // struct QState cur_state = { dist_f, dist_r };
+      cur_int_state = discretize_state(dist_f, dist_r);
+      reward = get_reward();
+    }
 
     // update q table
     update_qtable(qtable, next_int_action, reward, cur_int_state, old_int_state);
 
     // log activity
-      /*Serial.print("tick: ");
-      Serial.print(TICK);
+    /*Serial.print("tick: ");
+    Serial.print(TICK);
 
-      Serial.print("\tstate: ");
-      Serial.print(cur_int_state);
-      Serial.print(", (");
-      Serial.print(dist_f);
-      Serial.print(", ");
-      Serial.print(dist_r);
-      Serial.print(")");
+    Serial.print("\tstate: ");
+    Serial.print(cur_int_state);
+    Serial.print(", (");
+    Serial.print(dist_f);
+    Serial.print(", ");
+    Serial.print(dist_r);
+    Serial.print(")");
 
-      Serial.print("\taction: ");
-      Serial.print(next_int_action);
-      Serial.print(", (");
-      Serial.print(cur_vl);
-      Serial.print(", ");
-      Serial.print(cur_vr);
-      Serial.print(")");
+    Serial.print("\taction: ");
+    Serial.print(next_int_action);
+    Serial.print(", (");
+    Serial.print(cur_vl);
+    Serial.print(", ");
+    Serial.print(cur_vr);
+    Serial.print(")");
 
-      Serial.print("\treward: ");
-      Serial.println(reward);*/
+    Serial.print("\treward: ");
+    Serial.println(reward);*/
 
-      /*Serial.print(dist_f);
+    Serial.print(dist_f);
       Serial.print(", ");
       Serial.print(dist_r);
       Serial.print("\tInside: ");
@@ -452,6 +555,6 @@ void loop() {
       Serial.print("\tDone: ");
       Serial.print(DONE);
       Serial.print("\tKey count: ");
-      Serial.println(key_count);*/
+      Serial.println(key_count);
   }
 }
