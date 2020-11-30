@@ -47,8 +47,8 @@ float cur_vl = 0;
 float** qtable;
 float old_dist_r = 0;
 float old_dist_f = 0;
-const int SND_THLD = 550;
-const int LIGHT_THLD = 100;
+const int SND_THLD = 1500; // 550
+const int LIGHT_THLD = 1500; // 100
 
 int sound;
 int light_read_r;
@@ -126,20 +126,21 @@ void print_qtable(float** qtable) {
 }
 
 void win()
-{
- // optionally do stop motors dim the LED's etc. 
- // Serial.print("stopped");  // or other warning 
- 
- while(1){
-  led.setColor(0, 50, 0, 0);
-  led.show();
-  led.setColor(0, 0, 50, 0);
-  led.show();
-  led.setColor(0, 0, 0, 50);
-  led.show();
-  };
-}
-
+{ 
+  // optionally do stop motors dim the LED's etc.
+  // Serial.print("stopped"); // or other warning
+  Serial.println("YOU WIN!!");
+  while(1){ 
+    led.setColor(0, 50, 0, 0);
+    led.show();
+    delay(50);
+    led.setColor(0, 0, 50, 0);
+    led.show();
+    delay(50);
+    led.setColor(0, 0, 0, 50);
+    led.show();
+  } ;
+} 
 bool detect_patrol() {
   sound = mic.strength();
   light_read_r = light_r.read();
