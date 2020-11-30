@@ -47,6 +47,14 @@ float cur_vl = 0;
 float** qtable;
 float old_dist_r = 0;
 float old_dist_f = 0;
+const int SND_THLD = 550;
+const int LIGHT_THLD = 100;
+
+int sound;
+int light_read_r;
+int light_read_l;
+
+bool patrol_detected = false;
 
 // Led Ring
 MeRGBLed leds(0);
@@ -75,6 +83,13 @@ MeLineFollower lineSensorFront(PORT_10);
 
 MeUltrasonicSensor ULTRA_F(PORT_9);
 MeUltrasonicSensor ULTRA_R(PORT_7);
+MeSoundSensor mic(PORT_14);
+
+MeLightSensor light_r(PORT_11);
+MeLightSensor light_l(PORT_12);
+
+MeBuzzer siren;
+#define BUZZER_PORT 45
 
 /*
 
@@ -124,6 +139,18 @@ void win()
   led.show();
   };
 }
+
+bool detect_patrol() {
+  sound = mic.strength();
+  light_read_r = light_r.read();
+  light_read_l = light_l.read();
+
+  if (sound > SND_THLD || light_read_r > LIGHT_THLD || light_read_r > LIGHT_THLD)
+    return true;
+    
+  return false;
+}
+
 
 // limit the given value between the given min/max
 float clamp(float xmin, float xx, float xmax) {
@@ -461,9 +488,22 @@ void setup() {
     leds.setNumber(LEDNUM);
     leds.setColor(OFF);
     leds.show();*/
+  siren.setpin(BUZZER_PORT);
+  siren.noTone();
 }
 
 void loop() {
+
+  patrol_detected = detect_patrol();
+
+  if (patrol_detected) {
+    MOTOR_R.setMotorPwm(0);
+    MOTOR_L.setMotorPwm(0);
+    siren.tone(523, 100);
+    siren.tone(370, 100);
+    delay(3000);
+  }
+  
   // retrieve current distances
   delay(50);
   dist_f = ULTRA_F.distanceCm();
