@@ -44,7 +44,7 @@ int cur_int_state = 0;
 float reward = 0;
 float cur_vr = 0;
 float cur_vl = 0;
-float** qtable;
+float qtable[NUM_STATES][NUM_ACTIONS] = {};
 float old_dist_r = 0;
 float old_dist_f = 0;
 const int SND_THLD = 1500; // 550
@@ -156,9 +156,7 @@ void realize_action(int int_action) {
 
 // initializes the q-table
 void init_qtable() {
-  qtable = new float*[NUM_STATES];
   for (int i = 0; i != NUM_STATES; i++) {
-    qtable[i] = new float[NUM_ACTIONS];
     for (int j = 0; j != NUM_ACTIONS; j++)
       qtable[i][j] = 0.0;
   }
@@ -179,7 +177,7 @@ int choose_action() {
 
   if (rand_val < EPS) {
     float* possible_actions = qtable[old_int_state];
-    int int_action = 0;
+    int_action = 0;
     float max_action = 0.0;
     for (int i = 0; i < NUM_ACTIONS; i++) {
       if (possible_actions[i] > max_action) {
@@ -329,7 +327,7 @@ void loop() {
     reward = 0;
     MOTOR_L.setMotorPwm(cur_vl);
     MOTOR_R.setMotorPwm(cur_vr);
-    //delay(200);
+    delay(200);
   } else {
 
     // perform that action
