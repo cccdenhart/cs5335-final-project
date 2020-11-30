@@ -218,7 +218,7 @@ float get_reward() {
     3. right wall very far
   */
 
-  if (dist_r < 20.0 && dist_r > 5.0 && dist_f > 15.0) {
+  if (dist_r < 20.0 && dist_r > 12.0 && dist_f > 15.0) {
     if ((old_dist_f > dist_f) && (old_dist_r > dist_r)) {
       return 5.0;
     }
@@ -239,7 +239,7 @@ float get_reward() {
 }
 
 void checkKey() {
-  if (dist_f < MAX_HALL && dist_r < MAX_HALL) {
+  if (dist_f < 16 && dist_r < MAX_HALL) {
     INSIDE = true;
   } else if (dist_f > 150 || dist_r > 150) {
     DONE = false;
