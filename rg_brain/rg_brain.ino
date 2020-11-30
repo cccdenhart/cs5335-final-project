@@ -7,6 +7,7 @@
    - keyboard input training?
 */
 
+# include <EEPROM.h>
 #include <math.h>
 #include "MeAuriga.h"
 
@@ -44,11 +45,12 @@ int cur_int_state = 0;
 float reward = 0;
 float cur_vr = 0;
 float cur_vl = 0;
-float qtable[NUM_STATES][NUM_ACTIONS] = {};
+float** qtable;
 float old_dist_r = 0;
 float old_dist_f = 0;
 const int SND_THLD = 1500; // 550
 const int LIGHT_THLD = 1500; // 100
+const bool READ_EEPROM = false;
 
 int sound;
 int light_read_r;
@@ -156,9 +158,27 @@ void realize_action(int int_action) {
 
 // initializes the q-table
 void init_qtable() {
+  qtable = new float*[NUM_STATES];
   for (int i = 0; i != NUM_STATES; i++) {
+    qtable[i] = new float[NUM_ACTIONS];
     for (int j = 0; j != NUM_ACTIONS; j++)
       qtable[i][j] = 0.0;
+  }
+}
+
+void write_EEPROM() {
+  for (int i = 0; i < NUM_STATES; i++) {
+    for (int j = 0; j < NUM_ACTIONS; j++) {
+      EEPROM.update(i * NUM_ACTIONS + j, qtable[j][i]);
+    }
+  }
+}
+
+void read_EEPROM() {
+  for (int i = 0; i < NUM_STATES; i++) {
+    for (int j = 0; j < NUM_ACTIONS; j++) {
+      qtable[i][j] = EEPROM.read(i * NUM_ACTIONS + j);
+    }
   }
 }
 
@@ -177,7 +197,7 @@ int choose_action() {
 
   if (rand_val < EPS) {
     float* possible_actions = qtable[old_int_state];
-    int_action = 0;
+    int int_action = 0;
     float max_action = 0.0;
     for (int i = 0; i < NUM_ACTIONS; i++) {
       if (possible_actions[i] > max_action) {
@@ -218,7 +238,7 @@ float get_reward() {
     3. right wall very far
   */
 
-  if (dist_r < 20.0 && dist_r > 12.0 && dist_f > 15.0) {
+  if (dist_r < 20.0 && dist_r > 5.0 && dist_f > 15.0) {
     if ((old_dist_f > dist_f) && (old_dist_r > dist_r)) {
       return 5.0;
     }
@@ -239,7 +259,7 @@ float get_reward() {
 }
 
 void checkKey() {
-  if (dist_f < 16 && dist_r < MAX_HALL) {
+  if (dist_f < MAX_HALL && dist_r < MAX_HALL) {
     INSIDE = true;
   } else if (dist_f > 150 || dist_r > 150) {
     DONE = false;
@@ -272,18 +292,30 @@ void setup() {
     leds.show();*/
   siren.setpin(BUZZER_PORT);
   siren.noTone();
+  if (READ_EEPROM) {
+    read_EEPROM();
+  } else {
+    init_qtable();
+  }
 }
 
 void loop() {
 
+  // check patrol location
   patrol_detected = detect_patrol();
-
   if (patrol_detected) {
     MOTOR_R.setMotorPwm(0);
     MOTOR_L.setMotorPwm(0);
     siren.tone(523, 100);
     siren.tone(370, 100);
     delay(3000);
+  }
+
+  // cache qtable
+  if (TICK % 100 == 0) {
+    print_qtable();
+    Serial.println("CACHEING QTABLE ...");
+    write_EEPROM();
   }
 
   // retrieve current distances
@@ -327,7 +359,7 @@ void loop() {
     reward = 0;
     MOTOR_L.setMotorPwm(cur_vl);
     MOTOR_R.setMotorPwm(cur_vr);
-    delay(200);
+    //delay(200);
   } else {
 
     // perform that action
