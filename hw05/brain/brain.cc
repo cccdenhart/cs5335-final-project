@@ -174,6 +174,7 @@ void resolveCorner(Robot* robot) {
 
 void callback(Robot* robot)
 { 
+  /*
   cout << "*******************" << endl;
   cout << "STATE:    " << state.state << endl;
   cout << "Goal dir: " << state.dir << endl;
@@ -183,13 +184,8 @@ void callback(Robot* robot)
   cout << "Row:      " << state.row << endl;
   cout << "*******************" << endl;
   cout << endl;
+  */
 
-  if (state.state == FIND_WALL)
-    findWall(robot);
-  if (state.state == FOLLOW_WALL)
-    followWall(robot);
-  if (state.state == RESOLVE_CORNER)
-    resolveCorner(robot);
 }
 
 int

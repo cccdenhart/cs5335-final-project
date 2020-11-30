@@ -49,7 +49,7 @@ MeRGBLed led;
 #define WHITE   255, 255, 255
 #define OFF     0, 0, 0
 
-//////// ***** HARDWARE DECLARATIONS END ***** ////////
+//////// ***** Hardware declarations END ***** ////////
 
 
 /**************************************************/
@@ -65,9 +65,10 @@ const float GZ_MAX_VEL = 3.0;     // gazebo most postive amount CHANGED from bas
 const float RG_BASE_VEL = 100.0;  // ranger base velocity
 const float RG_MIN_VEL = -150.0;  // ranger most negative amount CHANGED from base vel
 const float RG_MAX_VEL = 150.0;   // ranger most positive amount CHANGED from base vel
-const float RG_MAX_DIST = 100.0;  // ranger max distance considered for state
-const int NUM_STATES = 36;        // number of state (distance) intervals used in qtable
-const int NUM_ACTIONS = 10;       // number of action (vl - vr) intervals used in qtable
+const float RG_MAX_DIST = 36;  // ranger max distance considered for state // 100
+const int NUM_STATES = 36;        // number of state (distance) intervals used in qtable // 36
+const int NUM_ACTIONS = 7;       // number of action (vl - vr) intervals used in qtable //10
+const int ACTION_DELAY = 200;    // 150
 
 // Q-Learning variables
 bool TRAINING = false;
@@ -102,7 +103,7 @@ bool patrol_detected = false;
 // Load from non-volatile memory
 const bool READ_EEPROM = false;
 
-//////// ***** GLOBAL VARIABLES END ***** ////////
+//////// ***** Global variables END ***** ////////
 
 
 /******************************************************/
@@ -138,10 +139,10 @@ int discretize_state() {
   int root_states = floor(sqrt(NUM_STATES));
 
   float dist_f_local = clamp(0.0, dist_f, RG_MAX_DIST);
-  int norm_f = floor(dist_f_local / RG_MAX_DIST) * (root_states - 1);
+  int norm_f = floor((dist_f_local / RG_MAX_DIST) * (root_states - 1));
 
   float dist_r_local = clamp(0.0, dist_r, RG_MAX_DIST);
-  int norm_r = floor(dist_r_local / RG_MAX_DIST) * (root_states - 1);
+  int norm_r = floor((dist_r_local / RG_MAX_DIST) * (root_states - 1));
 
   float result = norm_f + root_states * norm_r;
 
@@ -174,25 +175,68 @@ int choose_action() {
   return int_action;
 }
 
-
-// convert an integer action representation to a QAction
-void realize_action(int int_action) {
+/*
+  // convert an integer action representation to a QAction
+  void realize_action(int int_action) {
   float diff = ((int_action * 1.0 / NUM_ACTIONS) * (RG_MAX_VEL - RG_MIN_VEL)) + RG_MIN_VEL;
   float vl = RG_BASE_VEL - diff;
   float vr = (RG_BASE_VEL + diff) * -1.0;
   cur_vl = vl;
   cur_vr = vr;
+  }
+*/
+
+
+void realize_action(int int_action)
+{
+  int pwm = 180;
+  switch (int_action)
+  {
+    case 0: //Correct left slight
+      cur_vl =  pwm - pwm / 8;
+      cur_vr = -pwm;
+      break;
+
+    case 1: //Correct Right slight
+      cur_vl = pwm;
+      cur_vr = - pwm + pwm / 8;
+      break;
+
+    case 2: //Correct left
+      cur_vl =  pwm - pwm / 6;
+      cur_vr = -pwm;
+      break;
+
+    case 3: //Correct Right
+      cur_vl = pwm;
+      cur_vr = - pwm + pwm / 6;
+      break;
+
+    case 4: // Turn Left
+      cur_vl = pwm / 8;
+      cur_vr = -2 * pwm;
+      break;
+
+    case 5: //Turn Right
+      cur_vl = 2 * pwm;
+      cur_vr = -pwm / 8;
+      break;
+
+    case 6: // move backward
+      cur_vl = -pwm;
+      cur_vr = pwm;
+      break;
+  }
 }
 
-
-// determine a reward given the current state
-// NOTE: all distances in CM (ranger values)
-float get_reward() {
-  /* penalize if:
-    1. front wall very close
-    2. right wall very close
-    3. right wall very far
-  */
+/*
+  // determine a reward given the current state
+  // NOTE: all distances in CM (ranger values)
+  float get_reward() {
+  //penalize if:
+  //  1. front wall very close
+  //  2. right wall very close
+  //  3. right wall very far
 
   if (dist_r < 20.0 && dist_r > 5.0 && dist_f > 15.0) {
     if ((old_dist_f > dist_f) && (old_dist_r > dist_r)) {
@@ -212,6 +256,46 @@ float get_reward() {
     return -5.0;
 
   return 0;
+  }
+*/
+
+// determine a reward given the current state
+// NOTE: all distances in CM (ranger values)
+float get_reward() {
+  /* penalize if:
+    1. front wall very close
+    2. right wall very close
+    3. right wall very far
+  */
+
+  float min_f = 15.0;
+  float min_r = 15.0;
+  float max_r = 25.0;
+  float target_r = 20.0;
+
+  if (old_dist_f > dist_f) {                                  // moved forward
+
+    if (dist_f > min_f) {                                         // there is still space in front
+      if ((old_dist_r < max_r && dist_r > old_dist_r) ||           // veered in the correct direction +5
+          (old_dist_r > target_r && dist_r < old_dist_r)) {
+
+        if (dist_r < max_r && dist_r > min_r) {                            // ended within wall range +10
+          return 5.0;
+        }
+        return 1.0;
+      } else if ((old_dist_r > target_r && dist_r > old_dist_r) ||           // veered in the wrong direction -5
+                 (old_dist_r < target_r && dist_r < old_dist_r)) {
+        return -5;
+      }
+
+    } else if (dist_f <= min_f || old_dist_f <= min_f) {             // there is/was no space in front -5
+      return -10.0;
+    } else if (old_dist_f < dist_f && old_dist_f <= min_f) {     // moved backward when the old reading was too close +1
+      return 5.0;
+    }
+
+    return 0;
+  }
 }
 
 //////// ***** Q-learning functions END ***** ////////
@@ -398,7 +482,7 @@ void setup() {
   led.setNumber(LED_NUM);
   led.setColor(OFF);
   led.show();
-  
+
   siren.setpin(BUZZER_PORT);
   siren.noTone();
 
@@ -426,23 +510,23 @@ void loop() {
 
   // cache qtable
   if (TICK % 500 == 0) {
-    Serial.println("CACHEING QTABLE ...");
-    write_EEPROM();
+    //Serial.println("CACHEING QTABLE ...");
+    //write_EEPROM();
     //print_qtable();
     //print_eeprom_state();
   }
 
   // retrieve current distances
   delay(50);
-  dist_f = random(110);//ULTRA_F.distanceCm();
-  dist_r = random(110);//ULTRA_R.distanceCm();
+  dist_f = ULTRA_F.distanceCm();
+  dist_r = ULTRA_R.distanceCm();
 
   old_dist_r = dist_r;
   old_dist_f = dist_f;
 
   led.setColor(12, RED);
   led.show();
-  
+
   // increment tick
   TICK += 1;
 
@@ -469,22 +553,23 @@ void loop() {
 
   // safety mechanism for robot getting stuck on wall
   if (dist_f < 15) {
+
     cur_vl = -200.0;
     cur_vr = -100.0;
-    reward = 0;
+    reward = -5;
     MOTOR_L.setMotorPwm(cur_vl);
     MOTOR_R.setMotorPwm(cur_vr);
-    //delay(200);
+    delay(200);
   } else {
 
     // perform that action
     MOTOR_L.setMotorPwm(cur_vl);
     MOTOR_R.setMotorPwm(cur_vr);
+    delay(ACTION_DELAY);
 
     // measure reward from previous action
-    delay(150);
-    dist_f += random(-20, 20);//ULTRA_F.distanceCm();
-    dist_r += random(-20, 20);//ULTRA_R.distanceCm();
+    dist_f += ULTRA_F.distanceCm();
+    dist_r += ULTRA_R.distanceCm();
     cur_int_state = discretize_state();
     reward = get_reward();
   }
