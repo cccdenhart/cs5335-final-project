@@ -56,15 +56,6 @@ int light_read_l;
 
 bool patrol_detected = false;
 
-// Led Ring
-MeRGBLed leds(0);
-#define LEDNUM 12
-#define LEDPORT 55
-#define OFF 0, 0, 0
-#define RED 255, 0, 0
-#define BLUE 0, 0, 255
-#define GREEN 0, 255, 0
-
 // Line follower
 MeLineFollower lineSensor(PORT_10);
 
@@ -126,11 +117,11 @@ void print_qtable(float** qtable) {
 }
 
 void win()
-{ 
+{
   // optionally do stop motors dim the LED's etc.
   // Serial.print("stopped"); // or other warning
   Serial.println("YOU WIN!!");
-  while(1){ 
+  while (1) {
     led.setColor(0, 50, 0, 0);
     led.show();
     delay(50);
@@ -140,7 +131,7 @@ void win()
     led.setColor(0, 0, 0, 50);
     led.show();
   } ;
-} 
+}
 bool detect_patrol() {
   sound = mic.strength();
   light_read_r = light_r.read();
@@ -148,7 +139,7 @@ bool detect_patrol() {
 
   if (sound > SND_THLD || light_read_r > LIGHT_THLD || light_read_r > LIGHT_THLD)
     return true;
-    
+
   return false;
 }
 
@@ -192,7 +183,7 @@ void realize_action(int int_action) {
   float vr = (RG_BASE_VEL + diff) * -1.0;
   cur_vl = vl;
   cur_vr = vr;
-  }
+}
 /*void realize_action(int int_action) {
   switch (int_action) {
     case 0:
@@ -244,7 +235,7 @@ void realize_action(int int_action) {
       break;
   }
   cur_vr = cur_vr * -1.0;
-}*/
+  }*/
 /*void realize_action(int int_action) {
   switch (int_action) {
       int pwm = 220;
@@ -352,7 +343,7 @@ float rand_uniform() {
 // is chosen either optimally by the qtable or randomly
 // at a rate set by `eps`
 int choose_action(
-  float** qtable,
+  //float** qtable,
   int int_state,
   float eps = EPS
 ) {
@@ -379,25 +370,18 @@ int choose_action(
 }
 
 // update the qtable with new information
-void update_qtable(
-  float** qtable,
-  int action,
-  float reward,
-  int current_state,
-  int old_state,
-  float learning_rate = ALPHA,
-  float reward_decay = GAMMA
-) {
-  float old_value = qtable[old_state][action];
+// update the qtable with new information
+void update_qtable() {
+
+  float old_value = qtable[old_int_state][next_int_action];
   float max_q = -10000.0;
   for (int i = 0; i < NUM_ACTIONS; i++) {
-    if (qtable[current_state][i] > max_q) {
-      max_q = qtable[current_state][i];
+    if (qtable[cur_int_state][i] > max_q) {
+      max_q = qtable[cur_int_state][i];
     }
   }
-  float new_value = (1 - learning_rate) * old_value + learning_rate * (reward + reward_decay * max_q);
-
-  qtable[old_state][action] = new_value;
+  float new_value = (1 - ALPHA) * old_value + ALPHA * (reward + GAMMA * max_q);
+  qtable[old_int_state][next_int_action] = new_value;
 }
 
 // determine a reward given the current state
@@ -504,7 +488,7 @@ void loop() {
     siren.tone(370, 100);
     delay(3000);
   }
-  
+
   // retrieve current distances
   delay(50);
   dist_f = ULTRA_F.distanceCm();
@@ -561,7 +545,7 @@ void loop() {
       reward = 0;
       MOTOR_L.setMotorPwm(cur_vl);
       MOTOR_R.setMotorPwm(cur_vr);
-      delay(200);
+      //delay(200);
     } else {
 
       // perform that action
@@ -569,7 +553,7 @@ void loop() {
       MOTOR_R.setMotorPwm(cur_vr);
 
       // measure reward from previous action
-      delay(300);
+      delay(150);
       dist_f = ULTRA_F.distanceCm();
       dist_r = ULTRA_R.distanceCm();
       // struct QState cur_state = { dist_f, dist_r };
@@ -578,11 +562,11 @@ void loop() {
     }
 
     // update q table
-    update_qtable(qtable, next_int_action, reward, cur_int_state, old_int_state);
+    update_qtable();
 
-    if (key_count == 12){
-        win();
-      }
+    if (key_count == 8) {
+      win();
+    }
     // log activity
     Serial.print("tick: ");
     Serial.print(TICK);
@@ -606,15 +590,15 @@ void loop() {
     Serial.print("\treward: ");
     Serial.println(reward);
 
-    /*Serial.print(dist_f);
-      Serial.print(", ");
-      Serial.print(dist_r);
-      Serial.print("\tInside: ");
-      Serial.print(INSIDE);
-      Serial.print("\tDone: ");
-      Serial.print(DONE);
-      Serial.print("\tKey count: ");
-      Serial.println(key_count);
-      Serial.println(lineSensor.readSensors());*/
+    Serial.print(dist_f);
+    Serial.print(", ");
+    Serial.print(dist_r);
+    Serial.print("\tInside: ");
+    Serial.print(INSIDE);
+    Serial.print("\tDone: ");
+    Serial.print(DONE);
+    Serial.print("\tKey count: ");
+    Serial.println(key_count);
+    Serial.println(lineSensor.readSensors());
   }
 }
