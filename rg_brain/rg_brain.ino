@@ -32,7 +32,7 @@ const float RG_MIN_VEL = -150.0;  // ranger most negative amount CHANGED from ba
 const float RG_MAX_VEL = 150.0;  // ranger most positive amount CHANGED from base vel
 const float RG_MAX_DIST = 100.0;  // ranger max distance considered for state
 const int NUM_STATES = 64;  // number of state (distance) intervals used in qtable
-const int NUM_ACTIONS = 12;  // number of action (vl - vr) intervals used in qtable
+const int NUM_ACTIONS = 20;  // number of action (vl - vr) intervals used in qtable
 bool TRAINING = false;
 float EPS = 0.7;
 int TICK = 0;
@@ -110,6 +110,21 @@ void print_qtable(float** qtable) {
   Serial.println();
 }
 
+void win()
+{
+ // optionally do stop motors dim the LED's etc. 
+ // Serial.print("stopped");  // or other warning 
+ 
+ while(1){
+  led.setColor(0, 50, 0, 0);
+  led.show();
+  led.setColor(0, 0, 50, 0);
+  led.show();
+  led.setColor(0, 0, 0, 50);
+  led.show();
+  };
+}
+
 // limit the given value between the given min/max
 float clamp(float xmin, float xx, float xmax) {
   if (xx < xmin) return xmin;
@@ -143,14 +158,14 @@ int discretize_action(float vl, float vr) {
 
 // convert an integer action representation to a QAction
 // (usable for performing the action)
-/*void realize_action(int int_action) {
+void realize_action(int int_action) {
   float diff = ((int_action * 1.0 / NUM_ACTIONS) * (RG_MAX_VEL - RG_MIN_VEL)) + RG_MIN_VEL;
   float vl = RG_BASE_VEL - diff;
   float vr = (RG_BASE_VEL + diff) * -1.0;
   cur_vl = vl;
   cur_vr = vr;
-  }*/
-void realize_action(int int_action) {
+  }
+/*void realize_action(int int_action) {
   switch (int_action) {
     case 0:
       cur_vl = -170;
@@ -201,7 +216,7 @@ void realize_action(int int_action) {
       break;
   }
   cur_vr = cur_vr * -1.0;
-}
+}*/
 /*void realize_action(int int_action) {
   switch (int_action) {
       int pwm = 220;
@@ -424,10 +439,10 @@ void checkKey(float dist_f, float dist_r) {
   }
 
   if (INSIDE == true && DONE == false) {
-    if (lineSensor.readSensors() == 0) {
+    if (lineSensor.readSensors() <= 2) {
       key_count += 1;
       DONE = true;
-      led.setColor(key_count, 0, 50, 50);
+      led.setColor(key_count, 50, 50, 50);
       led.show();
       // siren.tone(784, 50);
       // siren.tone(1046, 100);
@@ -457,7 +472,7 @@ void loop() {
   old_dist_r = dist_r;
   old_dist_f = dist_f;
 
-  led.setColor(0, 50, 0, 0);
+  led.setColor(12, 50, 0, 0);
   led.show();
   // increment tick
   TICK += 1;
@@ -473,13 +488,13 @@ void loop() {
     // decrease 'randomness' in q-learning actions after 5000 tick
     if (TICK > 500) {
       EPS = 0.7;
-      led.setColor(0, 0, 50, 0);
+      led.setColor(11, 0, 50, 0);
       led.show();
     }
     // remove 'randomness' in q-learning actions after 15000 tick
     if (TICK > 1000) {
       EPS = 0.9;
-      led.setColor(0, 0, 0, 50);
+      led.setColor(10, 0, 0, 50);
       led.show();
     }
 
@@ -499,7 +514,7 @@ void loop() {
     realize_action(next_int_action);
 
     // safety mechanism for robot getting stuck on wall
-    if (dist_f < 20) {
+    if (dist_f < 15) {
       cur_vl = -200.0;
       cur_vr = -100.0;
       reward = 0;
@@ -524,8 +539,11 @@ void loop() {
     // update q table
     update_qtable(qtable, next_int_action, reward, cur_int_state, old_int_state);
 
+    if (key_count == 12){
+        win();
+      }
     // log activity
-    /*Serial.print("tick: ");
+    Serial.print("tick: ");
     Serial.print(TICK);
 
     Serial.print("\tstate: ");
@@ -545,9 +563,9 @@ void loop() {
     Serial.print(")");
 
     Serial.print("\treward: ");
-    Serial.println(reward);*/
+    Serial.println(reward);
 
-    Serial.print(dist_f);
+    /*Serial.print(dist_f);
       Serial.print(", ");
       Serial.print(dist_r);
       Serial.print("\tInside: ");
@@ -556,5 +574,6 @@ void loop() {
       Serial.print(DONE);
       Serial.print("\tKey count: ");
       Serial.println(key_count);
+      Serial.println(lineSensor.readSensors());*/
   }
 }
