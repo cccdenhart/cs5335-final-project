@@ -9,7 +9,7 @@ A "prisoner" robot must try to collect a number of keys hidden throughout a maze
 We attempted to solve this problem first in a simulation environment (designed in Gazebo) and then in a real maze that we built.
 
 
-This [repo](https://github.com/NatTuck/cs5335hw-gazebo) was referenced for starter code for gazebo.
+This [repo](https://github.com/NatTuck/cs5335hw-gazebo) was referenced for gazebo starter code.
 
 
 The "prisoner" robot was taught the task of wall following using [q-learning](https://en.wikipedia.org/wiki/Q-learning) in order to navigate the maze.  We implemented q-learning from scratch for this task.  States were considered to be distance intervals on the front and right sensors.  Actions were considered to be velocities for each wheel on the robot.  We designed the maze such that the interior walls that contained the keys were navigatable via wall following.  The prisoner robot was equipped with two ultrasonic sensors (one facing forward and one 90 degrees to the right) and a line following sensor.  The ultrasonic sensors were used to measure distances to the front and side.  The line following sensor was used to locate keys beneath the robot.
