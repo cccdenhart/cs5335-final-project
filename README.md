@@ -20,8 +20,10 @@ The "patrol" robot used a line following sensor to follow a line around the peri
 ## Project Layout
 The `brain/` folder contains all relavant code for robot operations.
 
-`brain/brain.cc` controls the gazebo version of the robot.
 `brain/rg_brain.ino` controls the physical version of the robot.
+
+`brain/brain.cc` controls the gazebo version of the robot.
+
 `brain/robot.hh` and `brain/gz_robot.cc` act as an API for gazebo usage in c++.
 
 The `models/`, `plugins/`, and `worlds/` folders all contain code for building a gazebo maze.
