@@ -23,1267 +23,1596 @@
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall0</name>
-      <pose>-22 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-27 -28 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall1</name>
-      <pose>-22 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-27 28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall2</name>
-      <pose>-22 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 -27 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall3</name>
-      <pose>-22 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 -27 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall4</name>
-      <pose>-22 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-24 -28 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall5</name>
-      <pose>-22 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-24 28 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall6</name>
-      <pose>-22 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 -24 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall7</name>
-      <pose>-22 3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 -24 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall8</name>
-      <pose>-22 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-21 -28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall9</name>
-      <pose>-22 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-21 28 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall10</name>
-      <pose>-22 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 -21 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall11</name>
-      <pose>-22 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 -21 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall12</name>
-      <pose>-22 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-18 -28 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall13</name>
-      <pose>-20 -19 -2.0 0 0 0</pose>
+      <pose>-18 28 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall14</name>
-      <pose>-20 19 -2.0 0 0 0</pose>
+      <pose>-28 -18 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall15</name>
-      <pose>-18 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 -18 -2.0 0 0 1.4707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall16</name>
-      <pose>-18 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-15 -28 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall17</name>
-      <pose>-18 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-15 28 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall18</name>
-      <pose>-18 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 -15 -2.0 0 0 1.4707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall19</name>
-      <pose>-18 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 -15 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall20</name>
-      <pose>-18 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-12 -28 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall21</name>
-      <pose>-18 3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-12 28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall22</name>
-      <pose>-18 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 -12 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall23</name>
-      <pose>-18 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 -12 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall24</name>
-      <pose>-16 14 -2.0 0 0 0</pose>
+      <pose>-9 -28 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall25</name>
-      <pose>-18 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-9 28 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall26</name>
-      <pose>-18 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 -9 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall27</name>
-      <pose>-16 -19 -2.0 0 0 0</pose>
+      <pose>28 -9 -2.0 0 0 1.4707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall28</name>
-      <pose>-16 19 -2.0 0 0 0</pose>
+      <pose>-6 -28 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall29</name>
-      <pose>-14 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-6 28 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall30</name>
-      <pose>-14 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 -6 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall31</name>
-      <pose>-12 -10 -2.0 0 0 0</pose>
+      <pose>28 -6 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall32</name>
-      <pose>-14 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-3 -28 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall33</name>
-      <pose>-14 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-3 28 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall34</name>
-      <pose>-14 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 -3 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall35</name>
-      <pose>-14 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 -3 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall36</name>
-      <pose>-14 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>0 -28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall37</name>
-      <pose>-14 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>0 28 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall38</name>
-      <pose>-14 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 0 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall39</name>
-      <pose>-14 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 0 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall40</name>
-      <pose>-14 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>3 -28 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall41</name>
-      <pose>-12 -19 -2.0 0 0 0</pose>
+      <pose>3 28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall42</name>
-      <pose>-12 19 -2.0 0 0 0</pose>
+      <pose>-28 3 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall43</name>
-      <pose>-10 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 3 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall44</name>
-      <pose>-10 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 -28 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall45</name>
-      <pose>-10 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 28 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall46</name>
-      <pose>-10 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 6 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall47</name>
-      <pose>-10 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 6 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall48</name>
-      <pose>-10 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>9 -28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall49</name>
-      <pose>-10 3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>9 28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall50</name>
-      <pose>-8 8 -2.0 0 0 0</pose>
+      <pose>-28 9 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall51</name>
-      <pose>-10 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 9 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall52</name>
-      <pose>-10 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>12 -28 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall53</name>
-      <pose>-10 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>12 28 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall54</name>
-      <pose>-10 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 12 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall55</name>
-      <pose>-8 -19 -2.0 0 0 0</pose>
+      <pose>28 12 -2.0 0 0 1.4707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall56</name>
-      <pose>-8 19 -2.0 0 0 0</pose>
+      <pose>15 -28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall57</name>
-      <pose>-6 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>15 28 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall58</name>
-      <pose>-6 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 15 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall59</name>
-      <pose>-6 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 15 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall60</name>
-      <pose>-6 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>18 -28 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall61</name>
-      <pose>-6 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>18 28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall62</name>
-      <pose>-4 -5 -2.0 0 0 0</pose>
+      <pose>-28 18 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall63</name>
-      <pose>-6 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 18 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall64</name>
-      <pose>-6 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>21 -28 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall65</name>
-      <pose>-6 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>21 28 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall66</name>
-      <pose>-6 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 21 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall67</name>
-      <pose>-6 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 21 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall68</name>
-      <pose>-6 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>24 -28 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall69</name>
-      <pose>-4 -19 -2.0 0 0 0</pose>
+      <pose>24 28 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall70</name>
-      <pose>-4 19 -2.0 0 0 0</pose>
+      <pose>-28 24 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall71</name>
-      <pose>-2 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 24 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall72</name>
-      <pose>-2 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>27 -28 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall73</name>
-      <pose>-2 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>27 28 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall74</name>
-      <pose>-2 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-28 27 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall75</name>
-      <pose>-2 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>28 27 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall76</name>
-      <pose>-2 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 -27 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall77</name>
-      <pose>0 1 -2.0 0 0 0</pose>
+      <pose>13 -24 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall78</name>
-      <pose>-2 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 -18 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall79</name>
-      <pose>-2 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 -15 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall80</name>
-      <pose>-2 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 -12 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall81</name>
-      <pose>-2 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 -9 -2.0 0 0 1.4707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall82</name>
-      <pose>-2 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 -6 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall83</name>
-      <pose>0 -19 -2.0 0 0 0</pose>
+      <pose>13 -3 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall84</name>
-      <pose>0 19 -2.0 0 0 0</pose>
+      <pose>13 0 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall85</name>
-      <pose>2 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 3 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall86</name>
-      <pose>2 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 6 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall87</name>
-      <pose>2 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 9 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall88</name>
-      <pose>2 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 12 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall89</name>
-      <pose>2 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 15 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall90</name>
-      <pose>4 -5 -2.0 0 0 0</pose>
+      <pose>13 18 -2.0 0 0 1.4707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall91</name>
-      <pose>2 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 21 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall92</name>
-      <pose>2 3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 24 -2.0 0 0 1.4707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall93</name>
-      <pose>2 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>13 27 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall94</name>
-      <pose>2 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-27 1 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall95</name>
-      <pose>2 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-24 1 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall96</name>
-      <pose>2 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-15 1 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall97</name>
-      <pose>4 -19 -2.0 0 0 0</pose>
+      <pose>-12 1 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall98</name>
-      <pose>4 19 -2.0 0 0 0</pose>
+      <pose>-9 1 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall99</name>
-      <pose>6 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-6 1 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall100</name>
-      <pose>6 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-3 1 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall101</name>
-      <pose>6 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>0 1 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall102</name>
-      <pose>6 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>3 1 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall103</name>
-      <pose>6 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 1 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall104</name>
-      <pose>6 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>9 1 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall105</name>
-      <pose>6 3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>12 1 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall106</name>
-      <pose>6 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-11 -27 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall107</name>
-      <pose>8 7 -2.0 0 0 0</pose>
+      <pose>-11 -24 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall108</name>
-      <pose>6 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-11 -18 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall109</name>
-      <pose>6 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-11 -15 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall110</name>
-      <pose>6 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-11 -12 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall111</name>
-      <pose>8 -19 -2.0 0 0 0</pose>
+      <pose>-11 -9 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall112</name>
-      <pose>8 19 -2.0 0 0 0</pose>
+      <pose>-11 -6 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall113</name>
-      <pose>10 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-11 -3 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall114</name>
-      <pose>10 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-11 0 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall115</name>
-      <pose>10 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-27 -4 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall116</name>
-      <pose>10 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-24 -4 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall117</name>
-      <pose>12 -4 -2.0 0 0 0</pose>
+      <pose>-21 -4 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall118</name>
-      <pose>10 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-15 -4 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall119</name>
-      <pose>10 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-12 -4 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall120</name>
-      <pose>10 3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-16 -27 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall121</name>
-      <pose>10 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-16 -24 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall122</name>
-      <pose>10 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-16 -21 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall123</name>
-      <pose>10 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-16 -18 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall124</name>
-      <pose>10 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-16 -9 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall125</name>
-      <pose>12 -19 -2.0 0 0 0</pose>
+      <pose>-16 -6 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall126</name>
-      <pose>12 19 -2.0 0 0 0</pose>
+      <pose>-27 -8 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall127</name>
-      <pose>14 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-24 -8 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall128</name>
-      <pose>14 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-14 -19 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall129</name>
-      <pose>14 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-11 -19 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall130</name>
-      <pose>14 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-16 -2 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall131</name>
-      <pose>14 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-16 1 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall132</name>
-      <pose>14 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-9 -5 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall133</name>
-      <pose>16 1 -2.0 0 0 0</pose>
+      <pose>-6 -5 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall134</name>
-      <pose>14 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-3 -5 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall135</name>
-      <pose>14 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>0 -5 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall136</name>
-      <pose>14 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 -5 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall137</name>
-      <pose>14 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>9 -5 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall138</name>
-      <pose>14 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>12 -5 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall139</name>
-      <pose>16 -19 -2.0 0 0 0</pose>
+      <pose>0 -27 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall140</name>
-      <pose>16 19 -2.0 0 0 0</pose>
+      <pose>0 -24 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall141</name>
-      <pose>18 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>0 -21 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall142</name>
-      <pose>18 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>0 -18 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall143</name>
-      <pose>18 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>0 -9 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall144</name>
-      <pose>18 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>0 -6 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall145</name>
-      <pose>20 -4 -2.0 0 0 0</pose>
+      <pose>-9 -18 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall146</name>
-      <pose>18 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-6 -18 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall147</name>
-      <pose>18 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>0 -18 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall148</name>
-      <pose>18 3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>2 -10 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall149</name>
-      <pose>18 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>5 -10 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall150</name>
-      <pose>18 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>8 -3 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall151</name>
-      <pose>18 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>8 0 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall152</name>
-      <pose>18 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-21 3 -2.0 0 0 1.5707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall153</name>
-      <pose>20 -19 -2.0 0 0 0</pose>
+      <pose>-21 6 -2.0 0 0 1.4707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall154</name>
-      <pose>20 19 -2.0 0 0 0</pose>
+      <pose>-21 9 -2.0 0 0 1.3707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall155</name>
-      <pose>22 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-21 12 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall156</name>
-      <pose>22 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-21 15 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall157</name>
-      <pose>22 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-21 18 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall158</name>
-      <pose>22 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-21 27 -2.0 0 0 1.4707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall159</name>
-      <pose>22 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-27 23 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall160</name>
-      <pose>22 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-24 23 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall161</name>
-      <pose>22 3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-19 21 -2.0 0 0 -0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall162</name>
-      <pose>22 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-16 21 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall163</name>
-      <pose>22 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-7 21 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall164</name>
-      <pose>22 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-4 21 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall165</name>
-      <pose>22 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-1 21 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall166</name>
-      <pose>24 -19 -2.0 0 0 0</pose>
+      <pose>2 21 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall167</name>
-      <pose>24 19 -2.0 0 0 0</pose>
+      <pose>5 21 -2.0 0 0 0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall168</name>
-      <pose>26 -18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>8 21 -2.0 0 0 0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall169</name>
-      <pose>26 -15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>11 21 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall170</name>
-      <pose>26 -12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 3 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall171</name>
-      <pose>26 -9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 6 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall172</name>
-      <pose>26 -6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 9 -2.0 0 0 1.7707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall173</name>
-      <pose>26 -3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 15 -2.0 0 0 1.8707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall174</name>
-      <pose>26 0 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 18 -2.0 0 0 1.2707963267948965</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall175</name>
-      <pose>26 3 -2.0 0 0 1.5707963267948966</pose>
+      <pose>6 21 -2.0 0 0 1.6707963267948966</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall176</name>
-      <pose>26 6 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-19 17 -2.0 0 0 0.0</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall177</name>
-      <pose>26 9 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-16 17 -2.0 0 0 -0.1</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall178</name>
-      <pose>26 12 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-13 17 -2.0 0 0 -0.30000000000000004</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall179</name>
-      <pose>26 15 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-10 17 -2.0 0 0 0.2</pose>
     </include>
     
           
     <include>
       <uri>model://brick_box_3x1x3</uri>
       <name>wall180</name>
-      <pose>26 18 -2.0 0 0 1.5707963267948966</pose>
+      <pose>-7 17 -2.0 0 0 0.1</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall181</name>
+      <pose>2 17 -2.0 0 0 -0.1</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall182</name>
+      <pose>5 17 -2.0 0 0 -0.1</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall183</name>
+      <pose>3 3 -2.0 0 0 1.8707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall184</name>
+      <pose>3 6 -2.0 0 0 1.2707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall185</name>
+      <pose>3 15 -2.0 0 0 1.3707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall186</name>
+      <pose>-19 14 -2.0 0 0 -0.1</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall187</name>
+      <pose>-16 14 -2.0 0 0 -0.2</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall188</name>
+      <pose>-13 14 -2.0 0 0 0.0</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall189</name>
+      <pose>-10 14 -2.0 0 0 -0.1</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall190</name>
+      <pose>-7 14 -2.0 0 0 0.0</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall191</name>
+      <pose>-1 14 -2.0 0 0 0.0</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall192</name>
+      <pose>2 14 -2.0 0 0 0.0</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall193</name>
+      <pose>-4 3 -2.0 0 0 1.7707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall194</name>
+      <pose>-4 6 -2.0 0 0 1.3707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall195</name>
+      <pose>-8 16 -2.0 0 0 1.8707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall196</name>
+      <pose>5 10 -2.0 0 0 -0.30000000000000004</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall197</name>
+      <pose>-13 19 -2.0 0 0 1.5707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall198</name>
+      <pose>8 13 -2.0 0 0 -0.2</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall199</name>
+      <pose>11 13 -2.0 0 0 0.0</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall200</name>
+      <pose>-1 23 -2.0 0 0 1.7707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall201</name>
+      <pose>-1 26 -2.0 0 0 1.6707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall202</name>
+      <pose>15 -6 -2.0 0 0 0.2</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall203</name>
+      <pose>18 -6 -2.0 0 0 0.2</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall204</name>
+      <pose>21 -6 -2.0 0 0 -0.30000000000000004</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall205</name>
+      <pose>24 -27 -2.0 0 0 1.7707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall206</name>
+      <pose>24 -24 -2.0 0 0 1.2707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall207</name>
+      <pose>24 -21 -2.0 0 0 1.2707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall208</name>
+      <pose>24 -18 -2.0 0 0 1.5707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall209</name>
+      <pose>24 -9 -2.0 0 0 1.6707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall210</name>
+      <pose>24 -6 -2.0 0 0 1.6707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall211</name>
+      <pose>15 -21 -2.0 0 0 0.30000000000000004</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall212</name>
+      <pose>18 -21 -2.0 0 0 0.0</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall213</name>
+      <pose>24 -21 -2.0 0 0 -0.1</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall214</name>
+      <pose>26 -10 -2.0 0 0 -0.2</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall215</name>
+      <pose>29 -10 -2.0 0 0 -0.30000000000000004</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall216</name>
+      <pose>21 -4 -2.0 0 0 1.2707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall217</name>
+      <pose>21 5 -2.0 0 0 1.5707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall218</name>
+      <pose>21 8 -2.0 0 0 1.8707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall219</name>
+      <pose>21 11 -2.0 0 0 1.2707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall220</name>
+      <pose>21 14 -2.0 0 0 1.2707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall221</name>
+      <pose>21 23 -2.0 0 0 1.6707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall222</name>
+      <pose>21 26 -2.0 0 0 1.7707963267948965</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall223</name>
+      <pose>21 29 -2.0 0 0 1.5707963267948966</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall224</name>
+      <pose>15 25 -2.0 0 0 -0.1</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall225</name>
+      <pose>18 25 -2.0 0 0 0.30000000000000004</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall226</name>
+      <pose>23 23 -2.0 0 0 0.30000000000000004</pose>
+    </include>
+    
+          
+    <include>
+      <uri>model://brick_box_3x1x3</uri>
+      <name>wall227</name>
+      <pose>26 23 -2.0 0 0 -0.1</pose>
     </include>
     
     

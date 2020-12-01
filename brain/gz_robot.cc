@@ -15,15 +15,7 @@ using namespace gazebo::transport;
 const double GOAL_X = 20.0;
 const double GOAL_Y = 0.0;
 
-double
-clamp(double xmin, double xx, double xmax)
-{
-    if (xx < xmin) return xmin;
-    if (xx > xmax) return xmax;
-    return xx;
-}
-
-Robot::Robot(int argc, char* argv[], void (*cb)(Robot*))
+GzRobot::GzRobot(int argc, char* argv[], void (*cb)(Robot*))
     : on_update(cb), task_done(false)
 {
     client::setup(argc, argv);
@@ -33,18 +25,16 @@ Robot::Robot(int argc, char* argv[], void (*cb)(Robot*))
     vel_pub = node->Advertise<msgs::Any>("~/tankbot0/vel_cmd");
     vel_pub->WaitForConnection();
 
-    cout << "advertise on " << vel_pub->GetTopic() << endl;
-
     scan_sub = node->Subscribe(
-        string("~/tankbot0/tankbot/sonar/link/laser/scan"),
-        &Robot::on_scan,
+        string("~/tankbot0/tankbot/ultrasonic_sensor/link/sonar/sonar"),
+        &GzRobot::on_scan,
         this,
         false
     );
 
     pose_sub = node->Subscribe(
         string("~/tankbot0/pose"),
-        &Robot::on_pose,
+        &GzRobot::on_pose,
         this,
         false
     );
@@ -52,14 +42,22 @@ Robot::Robot(int argc, char* argv[], void (*cb)(Robot*))
     cout << "robot created" << endl;
 }
 
-Robot::~Robot()
+GzRobot::~GzRobot()
 {
     client::shutdown();
     cout << "robot destroyed" << endl;
 }
 
+vector<float>
+GzRobot::get_range()
+{
+	  vector<float> range_res;
+		range_res.push_back(this->range);
+    return range_res;
+}
+
 void
-Robot::do_stuff()
+GzRobot::do_stuff()
 {
     while (!task_done) {
         gazebo::common::Time::MSleep(10);
@@ -74,7 +72,7 @@ Robot::do_stuff()
 }
 
 bool
-Robot::at_goal()
+GzRobot::at_goal()
 {
     double dx = GOAL_X - this->pos_x;
     double dy = GOAL_Y - this->pos_y;
@@ -82,48 +80,48 @@ Robot::at_goal()
 }
 
 void
-Robot::done()
+GzRobot::done()
 {
     this->task_done = true;
 }
 
 void
-Robot::set_vel(double lvel, double rvel)
+GzRobot::set_vel(double lvel, double rvel)
 {
-    lvel = clamp(-10, lvel, 10);
-    rvel = clamp(-10, rvel, 10);
-    cout << "set_vel: " << lvel << "," << rvel << endl;
+    auto r_error = lvel * ((rand() % 21) - 10) * 0.01;
+    auto l_error = rvel * ((rand() % 21) - 10) * 0.01;
+
+    lvel = clamp(-4, lvel + l_error, 4);
+    rvel = clamp(-4, rvel + r_error, 4);
+
+    //cout << "set_vel: " << lvel << "," << rvel << endl;
     int xx = 128 + int(lvel * 25.0);
     int yy = 128 + int(rvel * 25.0);
     auto msg = msgs::ConvertAny(xx * 256 + yy);
-    cout << "send vmsg = " << msg.int_value() << endl;
+    //cout << "send vmsg = " << msg.int_value() << endl;
     this->vel_pub->Publish(msg);
 }
 
 void
-Robot::on_scan(ConstLaserScanStampedPtr &msg)
+GzRobot::on_scan(ConstSonarStampedPtr &msg)
 {
-    msgs::LaserScan scan = msg->scan();
-    auto xs = scan.ranges();
-
-    range = 999.0;
-    for (long ii = 0; ii < xs.size(); ++ii) {
-        double hit_range = xs[ii];
-        //double theta = scan.angle_min() + ii*scan.angle_step();
-        if (hit_range < range) {
-            range = hit_range;
-        }
-    }
+    //cout << "Receiving the Sonar message from Sonar Sensor" << endl;
+    msgs::Sonar sonar = msg->sonar();
+    double hit_range = sonar.range();
+    range = hit_range;
 
     this->on_update(this);
 }
 
 void
-Robot::on_pose(ConstPoseStampedPtr &msg)
+GzRobot::on_pose(ConstPoseStampedPtr &msg)
 {
+    auto x_error = ((rand() % 21) - 10) * 0.02;
+    auto y_error = ((rand() % 21) - 10) * 0.02;
+
     auto pos = msg->pose().position();
-    this->pos_x = pos.x();
-    this->pos_y = pos.y();
+    this->pos_x = pos.x() + x_error;
+    this->pos_y = pos.y() + y_error;
 
     auto rot = msg->pose().orientation();
     ignition::math::Quaternion<double> qrot(rot.w(), rot.x(), rot.y(), rot.z());
@@ -131,3 +129,5 @@ Robot::on_pose(ConstPoseStampedPtr &msg)
 
     this->on_update(this);
 }
+
+Robot::~Robot() {}
