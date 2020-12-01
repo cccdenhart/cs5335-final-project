@@ -30,6 +30,6 @@ The `models/`, `plugins/`, and `worlds/` folders all contain code for building a
 - 2 [makeblock rangers](https://www.makeblock.com/project/ranger)
 - Arduino CLI or [IDE](https://arduino-ide.en.softonic.com/)
 - [Gazebo](http://gazebosim.org/) 
-- (non-virtualized) Ubuntu 20.04 or Debian 10 system.
+- Ubuntu 20.04
 - C++ compiler
 - A maze
