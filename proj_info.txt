@@ -1,0 +1,61 @@
+
+Questions for Robotics Final Project
+
+This file should be filled in once for your team and submitted once each to the three project assignments: Code, Demo, Presentation
+
+Make sure to answer all the questions here to qualify for full project credit.
+
+1. What are the names of all members of your team?
+
+Amit Mulay
+Charles Denhart	
+Kelly King
+Pablo Gomez
+
+2. In no more than three sentences, what was your project?
+
+Using the concepts learned throughout the course in addition to reinforcement learning concept, our team intended to implement a Maze Prison Escape Game. The overall concept of the game was to implement a game similar to the PAC-MAN game with a main agent attempting to achieve some goals and a secondary agent acting as an adversary to the main agent.
+
+3. What did each team member do to contribute to the project?
+
+Amit Mulay
+	- implementing RL technique for the prisoner robot
+	- troubleshoot & test sensors incorporation
+	- Attended all troubleshooting and testing sessions
+Charles Denhart	
+	- implementing RL technique for the prisoner robot
+	- implemented prisoner robot on Gazebo world
+	- Attended all troubleshooting and testing sessions
+Kelly King 
+	- build physical maze and gazebo maze
+	- Draft presentation and proj_info 
+	- Attended all troubleshooting and testing sessions
+Pablo Gomez 
+	- implemented control program for the patrol robot
+	- troubleshoot and test prisoner control program
+	- Attended all troubleshooting and testing sessions
+	
+4. What is the URL of your git repository with all your project code and your
+presentation notes / slides?
+
+https://github.com/cccdenhart/cs5335-final-project
+
+5. Which component do you think was the most innately difficult to build?
+
+The reinforcement learning on the prisoner robot
+
+6. What's the URL to your Demo video?
+
+
+
+
+7. What's the URL to your Presentation video?
+
+https://web.microsoftstream.com/video/2d17f176-b7f7-4df9-a555-96e5609e5dc0
+
+8. Did you share any generally useful example code with other teams to try for
+a bonus point? If so, what's the Git repo and Piazza post URLs?
+N/A
+
+https://github.com/amitvmulay/CS5335_Arduino_EEPROM_Read_write
+https://piazza.com/class/kcnltmm0pvf6l?cid=147
