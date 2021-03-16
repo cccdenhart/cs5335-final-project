@@ -1,6 +1,6 @@
 
 # Solving a Maze Escape Game using Q-Learning
-This was built as a final project for CS 5335 - Robotic Science and Systems at Northeastern University.  We reference this paper in our design: [Effective Reinforcement Learningfor Mobile Robots](http://www.sci.brooklyn.cuny.edu/~sklar/teaching/f06/air/papers/smart-icra2002.pdf). 
+This was built as a final project for CS 5335 - Robotic Science and Systems at Northeastern University.  We reference this paper in our design: [Effective Reinforcement Learning for Mobile Robots](http://www.sci.brooklyn.cuny.edu/~sklar/teaching/f06/air/papers/smart-icra2002.pdf). 
 
 ## Game Design
 A "prisoner" robot must try to collect a number of keys hidden throughout a maze, then escape the maze without being "caught" by a "patrol" robot.
